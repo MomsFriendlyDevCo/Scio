@@ -6,6 +6,7 @@ var schema = new mongoose.Schema({
 	created: {type: Date, default: Date.now},
 	address: {type: String},
 	status: {type: String, enum: ['ok', 'warning', 'danger', 'error', 'unknown'], default: 'unknown', index: true},
+	enabled: {type: Boolean, default: true, index: true},
 });
 
 module.exports = mongoose.model(name, schema);

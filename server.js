@@ -119,8 +119,8 @@ var ERMGuard = require('express-restify-mongoose-guard')({
 	// Allow _id and __v (but map to _v)
 	renameFields: {_id: '_id', __v: '_v'},
 
-	// Remap all DELETE methods to UPDATE setting status=deleted
-	deleteUpdateRemap: {status: 'deleted'},
+	// Remap all DELETE methods to UPDATE setting enabled=false
+	deleteUpdateRemap: {enabled: false},
 });
 restify.defaults({
 	version: '',

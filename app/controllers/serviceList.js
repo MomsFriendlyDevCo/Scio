@@ -4,7 +4,7 @@ app.controller('serviceListController', function($scope, $location, Notification
 
 	// Data refresher {{{
 	$scope.refresh = function() {
-		var query = {populate: 'server'};
+		var query = {populate: 'server', enabled: true};
 		if ($location.search().server) query.server = $location.search().server;
 
 		Services.query(query).$promise.then(function(data) {

@@ -5,7 +5,7 @@ var schema = new mongoose.Schema({
 	created: {type: Date, default: Date.now},
 	name: {type: String},
 	plugin: {type: String},
-	enabled: {type: Boolean, default: true},
+	enabled: {type: Boolean, default: true, index: true},
 	status: {type: String, enum: ['ok', 'warning', 'danger', 'error', 'unknown'], default: 'unknown', index: true},
 	cronSchedule: {type: String, default: '0 * * * *'}, // (Second, Minute, Hour, DayOfMonth, Month, DayOfWeek)
 	nextCheck: {

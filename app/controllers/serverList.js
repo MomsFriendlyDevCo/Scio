@@ -4,7 +4,7 @@ app.controller('serverListController', function($scope, Notification, Servers, S
 
 	// Data refresher {{{
 	$scope.refresh = function() {
-		Servers.query().$promise.then(function(data) {
+		Servers.query({enabled: true}).$promise.then(function(data) {
 			$scope.servers = data
 			// Decorators {{{
 			.map(function(server) {
