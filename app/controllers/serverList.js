@@ -1,11 +1,22 @@
-app.controller('serverListController', function($scope, Notification, Servers) {
+app.controller('serverListController', function($scope, Notification, Servers, Services) {
 	$scope.loading = true;
 	$scope.servers = null;
 
 	// Data refresher {{{
 	$scope.refresh = function() {
 		Servers.query().$promise.then(function(data) {
-			$scope.servers = data;
+			$scope.servers = data
+			// Decorators {{{
+			.map(function(server) {
+				// Service count {{{
+				server.serviceCount = 'loading';
+				Services.count({server: server._id}).$promise.then(function(data) {
+					server.serviceCount = data.count;
+				});
+				// }}}
+				return server;
+			});
+			// }}}
 			$scope.loading = false;
 		});
 	};

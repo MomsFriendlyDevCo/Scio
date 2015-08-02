@@ -57,8 +57,9 @@
 						<tbody>
 							<tr ng-repeat="server in servers | orderBy:'name' track by server._id">
 								<td><a href="#/servers/{{server._id}}">{{server.name || server.address || 'Untitled'}}</a></td>
-								<td class="text-center"><a href="#/servers/{{server._id}}" class="badge">
-									FIXME
+								<td class="text-center"><a href="#/services?server={{server._id}}" class="badge">
+									<i ng-if="server.serviceCount == 'loading'" class="fa fa-spinner fa-spin"></i>
+									<span ng-if="server.serviceCount >= 0">{{server.serviceCount | number}}</span>
 								</a></td>
 								<td ng-switch="server.status" class="text-center"><a href="#/servers/{{server._id}}">
 									<span ng-switch-when="ok" class="label label-table label-success">Ok</span>
