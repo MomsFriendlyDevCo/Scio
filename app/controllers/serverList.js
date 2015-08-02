@@ -1,5 +1,6 @@
 app.controller('serverListController', function($scope, $timeout, Notification, Servers, Services, Settings) {
 	$scope.loading = true;
+	$scope.loadingSilent = false;
 	$scope.servers = null;
 	$scope.lastRefresh = null;
 
@@ -7,6 +8,7 @@ app.controller('serverListController', function($scope, $timeout, Notification, 
 	$scope.refreshTimer = null;
 	$scope.refresh = function() {
 		$timeout.cancel($scope.refreshTimer);
+		$scope.loadingSilent = true;
 		Servers.query({enabled: true}).$promise
 			.then(function(data) {
 				$scope.servers = data
@@ -24,6 +26,7 @@ app.controller('serverListController', function($scope, $timeout, Notification, 
 				$scope.loading = false;
 			})
 			.finally(function() {
+				$scope.loadingSilent = false;
 				$scope.lastRefresh = moment().format('D/MM/YYYY HH:mm:ss');
 				if (Settings.poll.servers)
 					$scope.refreshTimer = $timeout($scope.refresh, Settings.poll.servers);
