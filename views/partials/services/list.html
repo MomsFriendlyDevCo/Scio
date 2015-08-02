@@ -38,7 +38,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="service in services | orderBy:'name' track by service._id">
+							<tr ng-repeat="service in services | orderBy:'server._id' track by service._id">
 								<td class="text-right"><a href="#/servers/{{service.server._id}}" class="badge bgm-black">{{service.server.name || service.server.address || 'Untitled'}}</a></td>
 								<td><a href="#/services/{{service._id}}">{{service.name || service.plugin || 'Untitled'}}</a></td>
 								<td ng-switch="service.status" class="text-center"><a href="#/services/{{service._id}}">
