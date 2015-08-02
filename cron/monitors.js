@@ -7,6 +7,7 @@ var Servers = require('../models/servers');
 
 module.exports = function(finish) {
 	async()
+		.set('touchedServers', {}) // Set of servers we have seen status alterations for (used to cascade the server status later)
 		.then('services', function(next) {
 			var query = { // What query to use when filtering the DB
 				enabled: true,
@@ -25,6 +26,7 @@ module.exports = function(finish) {
 		})
 		.limit(config.plugins.monitors.parallelLimit)
 		.forEach('services', function(nextService, service) {
+			var touchedServers = this.touchedServers;
 			async()
 				.then('plugin', function(next) {
 					// Find the right plugin {{{
@@ -96,6 +98,44 @@ module.exports = function(finish) {
 
 					service.save(nextService);
 				});
+		})
+		.then(function(next) {
+			// Update server status (i.e. cascade up from service status') {{{
+			var touchedServers = Object.keys(this.touchedServers);
+			async()
+				.parallel({
+					servers: function(next) {
+						Servers.find({_id: {'$in': touchedServers}})
+							.select('_id status')
+							.exec(next);
+					},
+					services: function(next) {
+						Services.find({server: {'$in': touchedServers}})
+							.select('server status')
+							.exec(next);
+					},
+				})
+				.forEach('servers', function(next, server) {
+					var bestResponse = 'ok';
+					this.services
+						.filter(function(service) { return service.server.toString() == server._id.toString() })
+						.forEach(function(service) {
+							if (service.status == 'warning' && bestResponse == 'ok') {
+								bestResponse = 'warning';
+							} else if (service.status == 'unknown' && bestResponse == 'ok') {
+								bestResponse = 'unknown';
+							} else if (service.status == 'error') {
+								bestResponse = 'error';
+							} else if (service.status == 'danger') {
+								bestResponse = 'danger';
+							}
+						});
+
+					server.status = bestResponse;
+					server.save(next);
+				})
+				.end(next);
+			// }}}
 		})
 		.end(finish);
 };
