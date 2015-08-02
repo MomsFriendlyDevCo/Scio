@@ -1,0 +1,85 @@
+/* FIX: All <a> elements should show the right mouse pointer {{{ */
+a {
+	cursor: pointer;
+}
+/* }}} */
+/* FIX: a.card elements don't color properly {{{ */
+a.card {
+	display: block;
+	color: #5E5E5E;
+}
+
+a.card:hover {
+	color: #5E5E5E;
+}
+/* }}} */
+/* THEME FIX: Login screens {{{ */
+.login-content {
+	text-align: center;
+	padding-top: 100px;
+	overflow: visible !important;
+}
+
+.login-content i.fa {
+	width: 26px;
+	font-size: 1.7em;
+}
+/* }}} */
+/* THEME FIX: Sidebar doesnt like FA icons {{{ */
+.sidebar-inner i.fa {
+	margin-top: 5px;
+}
+/* }}} */
+/* THEME FIX: Top menu icons don't look right {{{ */
+.top-menu > li {
+	margin-right: 10px;
+}
+
+.top-menu > li > a > i.fa {
+	font-size: 28px;
+	color: white;
+}
+
+.top-menu > li > a.btn {
+	height: 40px;
+}
+
+.top-menu > li > a {
+	text-align: center;
+	color: white;
+	vertical-align: bottom;
+	font-size: 1.6em;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
+.top-menu > li > a > .tmn-counts {
+	z-index: 1;
+}
+/* }}} */
+/* THEME FIX: Sliders don't render correctly {{{ */
+.noUi-horizontal {
+	margin-top: 20px;
+}
+
+.noUi-base {
+	background: #2196f3;
+}
+/* }}} */
+/* THEME FIX: For some reason the top-right of the header bar sometimes becomes mis-aligned {{{ */
+.header-right {
+	top: 14px;
+	right: 0;
+	position: absolute;
+}
+/* }}} */
+/* THEME FIX: Modal Backdrops dont have the correct z-index {{{ */
+.modal-backdrop {
+	z-index: 2 !important;
+}
+/* }}} */
+/* Thumbnails are not of a consistant size {{{ */
+.thumbnails > div {
+	height: 100px;
+}
+/* }}} */

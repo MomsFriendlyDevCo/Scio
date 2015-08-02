@@ -1,0 +1,79 @@
+<header id="header">
+	<ul class="header-inner">
+		<li id="menu-trigger" data-trigger="#sidebar">
+			<div class="line-wrap">
+				<div class="line top"></div>
+				<div class="line center"></div>
+				<div class="line bottom"></div>
+			</div>
+		</li>
+
+		<li class="logo hidden-xs">
+			<a href="/">Scio</a>
+		</li>
+
+		<li class="header-right">
+			<ul class="top-menu">
+				<!-- User display {{{ -->
+				<li ng-if="user._id" class="dropdown">
+					<a data-toggle="dropdown">
+						{{user.name}}
+					</a>
+					<ul class="dropdown-menu pull-right">
+						<li>
+							<a href="/logout"><i class="fa fa-sign-out"></i> Log out</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-if="!user._id">
+					<a class="btn bgm-blue" href="/login">
+						<i class="fa fa-sign-in"></i>
+						Login
+					</a>
+				</li>
+				<li ng-if="!user._id">
+					<a class="btn bgm-indigo" href="/signup">
+						<i class="fa fa-user"></i>
+						Signup
+					</a>
+				</li>
+				<!-- }}} -->
+			</ul>
+		</li>
+	</ul>
+
+	<!-- Top Search Content -->
+	<div id="top-search-wrap">
+		<input type="text">
+		<i id="top-search-close">&times;</i>
+	</div>
+</header>
+
+<section id="main">
+	<aside id="sidebar">
+		<div class="sidebar-inner">
+			<div class="si-inner">
+				<div class="profile-menu gavel-profile-menu">
+					<a href="/">
+						<div class="profile-pic text-center">
+							<img src="/img/logo.png" alt="Scio">
+						</div>
+					</a>
+				</div>
+
+				<ul class="main-menu">
+					<li><a href="#/servers"><i class="fa fa-home"></i> Servers</a></li>
+					<li><a href="#/services"><i class="fa fa-home"></i> Services</a></li>
+
+					<li ng-if="user._id" ng-class="active"><a href="/logout"><i class="fa fa-sign-out"></i> Log out</a></li>
+				</ul>
+			</div>
+		</div>
+	</aside>
+
+	<section id="content">
+		<div class="container">
+			<div ui-view="main"></div>
+		</div>
+	</section>
+</section>

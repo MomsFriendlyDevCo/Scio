@@ -1,0 +1,17 @@
+{
+	"servers": [
+		{
+			"_ref": "servers.localhost",
+			"name": "Localhost",
+			"address": "localhost"
+		}
+	],
+
+	"services": [
+		{
+			"server": "servers.localhost",
+			"name": "Ping",
+			"plugin": "ping"
+		}
+	]
+}

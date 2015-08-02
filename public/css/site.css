@@ -1,0 +1,52 @@
+/* Global elements {{{ */
+body {
+	cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+/* }}} */
+/* Directive: duration-popover {{{ */
+.durationPopup .form-control-static {
+	font-size: 2.2em;
+}
+
+.durationPopup .text-muted {
+	color: #C9C9C9;
+	font-size: 0.7em;
+}
+/* }}} */
+/* Header {{{ */
+/* Need to force property override as theme styling is set after this */
+.gavel-chair-bg {
+	background-color: #FD7E7E !important;
+}
+.gavel-central-bg {
+	background-color: #4285F4 !important;
+	background-color: rgba(86, 137, 217, 0.99) !important;
+}
+/* }}} */
+/* Sidebar/Main-menu overrides {{{ */
+#sidebar .profile-menu > a {
+  height: auto !important;
+}
+ul.main-menu {
+  margin: 0 !important;
+}
+/* }}} */
+/* Form styling {{{ */
+textarea.form-control {
+  resize: vertical;
+}
+/* }}} */
+/* General styling {{{ */
+html, body, #main {
+  height: 100%;
+}
+
+a .fa {
+  vertical-align: middle;
+}
+/* }}} */

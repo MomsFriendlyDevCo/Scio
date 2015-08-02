@@ -184,7 +184,7 @@ async()
 	})
 	.forEach('pluginsList', function(next, plugin) {
 		var basename = fspath.basename(plugin);
-		console.log(colors.blue('[PLUGIN]'), basename, plugin);
+		console.log(colors.blue('[PLUGIN]'), basename);
 		var plugin = require(plugin);
 		if (!plugin._scio) {
 			return next('Plugin does not look like a Scio compatible module: ' + basename);
