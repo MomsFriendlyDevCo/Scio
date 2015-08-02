@@ -34,7 +34,7 @@
 								<th>Name</th>
 								<th width="15ex" class="text-center">Services</th>
 								<th width="15ex" class="text-center">Status</th>
-								<th width="10ex">&nbsp;</th>
+								<th width="100px">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -52,6 +52,7 @@
 									<span ng-switch-default class="label label-table label-info">Unknown</span>
 								</a></td>
 								<td class="text-center">
+									<a tooltip="Open link in a new tab" href="http://{{server.address}}" target="_blank" class="btn btn-xs btn-default"><i class="fa fa-reply"></i></a>
 									<a confirm="deleteServer(server)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
