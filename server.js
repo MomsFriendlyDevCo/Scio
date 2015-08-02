@@ -179,12 +179,12 @@ async()
 		});
 	})
 	.then(function(next) {
-		console.log('Detected', colors.cyan(this.pluginsList.length), 'plugins');
+		console.log(colors.blue('[PLUGINS]'), 'Detected', colors.cyan(this.pluginsList.length), 'plugins');
 		next();
 	})
 	.forEach('pluginsList', function(next, plugin) {
 		var basename = fspath.basename(plugin);
-		console.log(colors.blue('[PLUGIN]'), basename);
+		console.log(colors.blue('[PLUGINS]'), 'Load', colors.cyan(basename));
 		var plugin = require(plugin);
 		if (!plugin._scio) {
 			return next('Plugin does not look like a Scio compatible module: ' + basename);
@@ -192,7 +192,9 @@ async()
 			Object.keys(plugins).forEach(function(pluginType) {
 				if (!plugin[pluginType]) return; // Not provided
 				if (!_.isArray(plugin[pluginType])) return next('Plugin ' + basename + ' must return an array for plugin type "' + pluginType + '"');
-				_.merge(plugins[pluginType], plugin[pluginType]);
+				plugin[pluginType].forEach(function(pluginTypePlugin) {
+					plugins[pluginType].push(pluginTypePlugin);
+				});
 			});
 			next();
 		}
@@ -202,6 +204,16 @@ async()
 			console.log(colors.red('[ERROR]'), err);
 			process.exit(1);
 		}
+		// Print out what we loaded {{{
+		Object.keys(plugins).forEach(function(pluginType) {
+			if (plugins[pluginType].length > 0)
+				console.log(
+					colors.blue('[PLUGINS]'),
+					'Registered ' + pluginType + ':',
+					_.pluck(plugins[pluginType], 'ref').map(function(i) { return colors.cyan(i) }).join(', ')
+				);
+		});
+		// }}}
 	});
 // }}}
 // Cron {{{

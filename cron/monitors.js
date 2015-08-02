@@ -55,14 +55,20 @@ module.exports = function(finish) {
 							return next(err);
 						} else if (plugin.type == 'boolean') {
 							service.lastCheck = {
-								status: (!!res.value ? 'ok' : 'danger'),
-								response: res.value,
+								status: (!!res ? 'ok' : 'danger'),
+								response: res,
 							};
-							if (!res.value) console.log(colors.blue('[PLUGIN ' + service.plugin + '@' + (service.address || service.server.address) + ']'), 'Service is down!');
+							if (!res) console.log(colors.blue('[PLUGIN ' + service.plugin + '@' + (service.address || service.server.address) + ']'), 'Service is down!');
+						} else if (plugin.type == 'enum') {
+							service.lastCheck = {
+								status: res,
+								response: null,
+							};
+							if (res != 'ok') console.log(colors.blue('[PLUGIN ' + service.plugin + '@' + (service.address || service.server.address) + ']'), 'has status', colors.cyan(res));
 						} else if (!plugin.type) {
 							return next('Plugin has no type specified: ' + service.plugin);
 						} else {
-							return next('Unknown type for plugin: ' + service.plugin);
+							return next('Unknown type return for plugin: ' + service.plugin);
 						}
 						next();
 					}, service);
@@ -73,7 +79,7 @@ module.exports = function(finish) {
 					try {
 						var parsedCron = cronParser.parseExpression(service.cronSchedule);
 						service.nextCheck.date = parsedCron.next();
-						console.log('Next run set to', service.nextCheck.date, 'FROM', (service.lastCheck.date || service.created));
+						// console.log('Next run set to', service.nextCheck.date, 'FROM', (service.lastCheck.date || service.created));
 						next();
 					} catch (e) {
 						return next('Error while parsing cron expression: ' + self.cronSchedule);
