@@ -2,6 +2,10 @@ Scio
 ====
 Open Source modular server status tracking.
 
+
+**WARNING: This project is still in the beta stage. Use at your own risk**
+
+
 **Features**:
 
 * **Highly modular architecture** - Look on NPM for other [Scio](https://www.npmjs.com/browse/keyword/scio) tagged modules
