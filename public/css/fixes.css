@@ -83,3 +83,8 @@ a.card:hover {
 	height: 100px;
 }
 /* }}} */
+/* .text-muted not light enough {{{ */
+.text-muted {
+	color: #CCC !important;
+}
+/* }}} */
