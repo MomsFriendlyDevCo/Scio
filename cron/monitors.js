@@ -12,6 +12,7 @@ module.exports = function(finish) {
 				enabled: true,
 				'$or': [
 					{ 'nextCheck.date': {'$lte': new Date()} },
+					{ 'nextCheck.date': null },
 					{ 'nextCheck.force': true },
 				],
 			})
@@ -30,8 +31,8 @@ module.exports = function(finish) {
 					// }}}
 				})
 				.then(function(next) {
-					var plugin = this.plugin;
 					// Run plugin {{{
+					var plugin = this.plugin;
 					plugin.callback.call(service, function(err, res) {
 						if (err) {
 							return next(err);
@@ -53,11 +54,9 @@ module.exports = function(finish) {
 				.then(function(next) {
 					// Calculate the nextCheck {{{
 					try {
-						var parsedCron = cronParser.parseExpression(service.cronSchedule, {
-							currentDate: service.lastCheck.date || service.created,
-						});
+						var parsedCron = cronParser.parseExpression(service.cronSchedule);
 						service.nextCheck.date = parsedCron.next();
-						console.log('Next run set to', service.nextCheck.date);
+						console.log('Next run set to', service.nextCheck.date, 'FROM', (service.lastCheck.date || service.created));
 						next();
 					} catch (e) {
 						return next('Error while parsing cron expression: ' + self.cronSchedule);
@@ -72,6 +71,7 @@ module.exports = function(finish) {
 						};
 						console.log(colors.red('[MONITOR ERR ' + service.plugin + ']'), err);
 					}
+					service.lastCheck.date = new Date();
 					service.nextCheck.force = false;
 					service.save(nextService);
 				});
