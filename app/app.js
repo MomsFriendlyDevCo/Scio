@@ -1,5 +1,11 @@
 var app = angular.module('app', [
+	'angular-bs-confirm',
+	'angular-bs-popover',
+	'angular-bs-tooltip',
 	'ngResource',
+	'prettyBytes',
+	'ui.gravatar',
+	'ui-notification',
 	'ui.router'
 ]);
 
