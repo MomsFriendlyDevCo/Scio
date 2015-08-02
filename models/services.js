@@ -17,6 +17,7 @@ var schema = new mongoose.Schema({
 		date: {type: Date},
 		response: {type: String},
 	},
+	options: {type: mongoose.Schema.Types.Mixed},
 });
 
 module.exports = mongoose.model(name, schema);

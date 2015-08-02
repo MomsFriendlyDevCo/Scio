@@ -35,6 +35,17 @@ module.exports = function(finish) {
 					// }}}
 				})
 				.then(function(next) {
+					// Apply options {{{
+					if (!service.options) service.options = {};
+					this.plugin.options.forEach(function(option) {
+						if (!option.default) return; // No need to apply a default
+						if (service.options[option.id]) return; // Option manually specified by the user
+						service.options[option.id] = option.default; // Read in from defaults
+					});
+					next();
+					// }}}
+				})
+				.then(function(next) {
 					// Run plugin {{{
 					var plugin = this.plugin;
 					plugin.callback.call(service, function(err, res) {
@@ -77,6 +88,12 @@ module.exports = function(finish) {
 					}
 					service.lastCheck.date = new Date();
 					service.nextCheck.force = false;
+					service.status = service.lastCheck.status;
+					delete service.options; // Dont overwrite the users options with our calculated ones
+
+					// Mark the server as dirty so we can recalc later
+					touchedServers[service.server._id] = true;
+
 					service.save(nextService);
 				});
 		})
