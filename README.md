@@ -29,8 +29,16 @@ Run the following:
 	npm install
 	bower install
 
-	# Build the database
-	gulp db
-
 	# Start everything
 	gulp
+
+
+Configuration
+-------------
+Obviously you will be wanting to specify your own server / sevice combos.
+
+Scio needs *some* plugins to work so either go look for some [Scio tagged modules](https://www.npmjs.com/browse/keyword/scio) or use the below to get started:
+
+	# Install the base ping + http monitoring plugins
+	npm install scio-monitor-ping scio-monitor-http
+
