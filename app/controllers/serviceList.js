@@ -18,7 +18,7 @@ app.controller('serviceListController', function($scope, $location, Notification
 	// Editing {{{
 	$scope.deleteService = function(service) {
 		Services.delete({id: service._id}).$promise.then(function() {
-			Notification.success('<i class="fa fa-trash"></i> Service <strong>' + service.title + '</strong> has been deleted');
+			Notification.success('<i class="fa fa-trash"></i> Service <strong>' + (service.name || service.plugin || 'Untitled') + '</strong> for server <strong>' + (service.server.name || service.server.address || 'Untitled') + '</strong> has been deleted');
 			$scope.refresh();
 		});
 	};

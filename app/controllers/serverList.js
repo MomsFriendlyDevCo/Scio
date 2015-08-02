@@ -26,7 +26,7 @@ app.controller('serverListController', function($scope, Notification, Servers, S
 	// Editing {{{
 	$scope.deleteServer = function(server) {
 		Servers.delete({id: server._id}).$promise.then(function() {
-			Notification.success('<i class="fa fa-trash"></i> Server <strong>' + server.title + '</strong> has been deleted');
+			Notification.success('<i class="fa fa-trash"></i> Server <strong>' + (server.name || server.address || 'Untitled') + '</strong> has been deleted');
 			$scope.refresh();
 		});
 	};
