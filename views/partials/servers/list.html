@@ -64,8 +64,8 @@
 								<td ng-switch="server.status" class="text-center"><a href="#/servers/{{server._id}}">
 									<span ng-switch-when="ok" class="label label-table label-success">Ok</span>
 									<span ng-switch-when="warning" class="label label-table label-warning">Warning</span>
+									<span ng-switch-when="error" class="label label-table label-warning">Danger</span>
 									<span ng-switch-when="danger" class="label label-table label-danger">Danger</span>
-									<span ng-switch-when="danger" class="label label-table label-error">Danger</span>
 									<span ng-switch-default class="label label-table label-info">Unknown</span>
 								</a></td>
 								<td class="text-center">
