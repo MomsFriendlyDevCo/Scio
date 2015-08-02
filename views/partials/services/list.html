@@ -1,8 +1,8 @@
-<div ng-controller="serverListController" class="container">
+<div ng-controller="serviceListController" class="container">
 
 	<!-- Header {{{ -->
 	<div class="block-header">
-		<h2>Servers</h2>
+		<h2>Services</h2>
 		
 		<ul class="actions">
 			<li>
@@ -41,39 +41,37 @@
 		<div class="card-body">
 			<div ng-if="loading" class="alert alert-loading">
 				<i class="fa fa-spinner fa-spin"></i>
-				Loading server list...
+				Loading service list...
 			</div>
 			<div ng-if="!loading">
 				<div class="table-responsive">
-					<table ng-if="servers.length" class="table table-hover">
+					<table ng-if="services.length" class="table table-hover">
 						<thead>
 							<tr>
+								<th width="50px" class="text-right">Service</th>
 								<th>Name</th>
-								<th width="15ex" class="text-center">Services</th>
 								<th width="15ex" class="text-center">Status</th>
 								<th width="10ex" class="text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="server in servers | orderBy:'name' track by server._id">
-								<td><a href="#/servers/{{server._id}}">{{server.name || server.address || 'Untitled'}}</a></td>
-								<td class="text-center"><a href="#/servers/{{server._id}}" class="badge">
-									FIXME
-								</a></td>
-								<td ng-switch="server.status" class="text-center"><a href="#/servers/{{server._id}}">
+							<tr ng-repeat="service in services | orderBy:'name' track by service._id">
+								<td class="text-right"><a href="#/servers/{{service.server._id}}" class="badge bgm-black">{{service.server.name || service.server.address || 'Untitled'}}</a></td>
+								<td><a href="#/services/{{service._id}}">{{service.name || service.plugin || 'Untitled'}}</a></td>
+								<td ng-switch="service.status" class="text-center"><a href="#/services/{{service._id}}">
 									<span ng-switch-when="ok" class="label label-table label-success">Ok</span>
 									<span ng-switch-when="warning" class="label label-table label-warning">Warning</span>
 									<span ng-switch-when="danger" class="label label-table label-danger">Danger</span>
-									<span ng-switch-when="danger" class="label label-table label-error">Danger</span>
+									<span ng-switch-when="error" class="label label-table label-danger">Error</span>
 									<span ng-switch-default class="label label-table label-info">Unknown</span>
 								</a></td>
 								<td class="text-center">
-									<a confirm="deleteServer(server)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+									<a confirm="deleteService(service)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>
 						</tbody>
 					</table>
-					<div ng-if="!servers.length" class="alert alert-info">No servers found</div>
+					<div ng-if="!services.length" class="alert alert-info">No services found</div>
 				</div>
 			</div>
 		</div>
