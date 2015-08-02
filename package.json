@@ -3,7 +3,17 @@
   "description": "Modular server status tracking",
   "version": "0.0.0",
   "main": "server.js",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MomsFriendlyDevCo/Scio"
+  },
+  "license": "MIT",
+  "keywords": [
+    "scio",
+    "monitor",
+    "monitoring",
+    "tracking"
+  ],
   "engines": {
     "node": "0.10.x"
   },
