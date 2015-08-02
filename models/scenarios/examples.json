@@ -4,14 +4,30 @@
 			"_ref": "servers.localhost",
 			"name": "Localhost",
 			"address": "localhost"
+		},
+		{
+			"_ref": "servers.localhost2",
+			"name": "Localhost2",
+			"address": "localhost2"
 		}
 	],
 
 	"services": [
 		{
 			"server": "servers.localhost",
-			"name": "Ping",
 			"plugin": "ping"
+		},
+		{
+			"server": "servers.localhost",
+			"plugin": "http"
+		},
+		{
+			"server": "servers.localhost2",
+			"plugin": "ping"
+		},
+		{
+			"server": "servers.localhost2",
+			"plugin": "http"
 		}
 	]
 }
