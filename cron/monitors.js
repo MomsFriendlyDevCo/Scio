@@ -8,16 +8,20 @@ var Servers = require('../models/servers');
 module.exports = function(finish) {
 	async()
 		.then('services', function(next) {
-			Services.find({
+			var query = { // What query to use when filtering the DB
 				enabled: true,
 				'$or': [
 					{ 'nextCheck.date': {'$lte': new Date()} },
 					{ 'nextCheck.date': null },
 					{ 'nextCheck.force': true },
 				],
-			})
-			.populate('server')
-			.exec(next);
+			};
+
+			if (config.cron.debugForceAll) query = {enabled: true};
+
+			Services.find(query)
+				.populate('server')
+				.exec(next);
 		})
 		.limit(config.plugins.monitors.parallelLimit)
 		.forEach('services', function(nextService, service) {
