@@ -1,10 +1,13 @@
-app.controller('serviceListController', function($scope, Notification, Services) {
+app.controller('serviceListController', function($scope, $location, Notification, Services) {
 	$scope.loading = true;
 	$scope.services = null;
 
 	// Data refresher {{{
 	$scope.refresh = function() {
-		Services.query({populate: 'server'}).$promise.then(function(data) {
+		var query = {populate: 'server'};
+		if ($location.search().server) query.server = $location.search().server;
+
+		Services.query(query).$promise.then(function(data) {
 			$scope.services = data;
 			$scope.loading = false;
 		});
