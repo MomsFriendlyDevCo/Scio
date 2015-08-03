@@ -13745,20 +13745,6 @@ body.login-content:before {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   }
 }
-.timeline {
-  position: relative;
-}
-@media (min-width: 768px) {
-  .timeline {
-    padding: 50px;
-    padding-left: 100px;
-  }
-}
-@media (max-width: 767px) {
-  .timeline {
-    margin-top: 30px;
-  }
-}
 .t-view {
   border: 1px solid #eee;
   position: relative;
