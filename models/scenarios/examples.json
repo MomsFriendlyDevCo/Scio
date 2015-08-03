@@ -2,11 +2,13 @@
 	"servers": [
 		{
 			"_ref": "servers.localhost",
+			"ref": "localhost",
 			"name": "Localhost",
 			"address": "localhost"
 		},
 		{
 			"_ref": "servers.localhost2",
+			"ref": "localhost2",
 			"name": "Localhost2",
 			"address": "localhost2"
 		}
@@ -14,18 +16,22 @@
 
 	"services": [
 		{
+			"ref": "localhost/ping",
 			"server": "servers.localhost",
 			"plugin": "ping"
 		},
 		{
+			"ref": "localhost/http",
 			"server": "servers.localhost",
 			"plugin": "http"
 		},
 		{
+			"ref": "localhost2/ping",
 			"server": "servers.localhost2",
 			"plugin": "ping"
 		},
 		{
+			"ref": "localhost2/http",
 			"server": "servers.localhost2",
 			"plugin": "http"
 		}

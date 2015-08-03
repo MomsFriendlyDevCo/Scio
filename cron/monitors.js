@@ -4,6 +4,7 @@ var colors = require('colors');
 var cronParser = require('cron-parser');
 var Services = require('../models/services');
 var Servers = require('../models/servers');
+var Ticks = require('../models/ticks');
 
 module.exports = function(finish) {
 	async()
@@ -52,46 +53,61 @@ module.exports = function(finish) {
 					var plugin = this.plugin;
 					plugin.callback.call(service, function(err, res) {
 						if (err) {
-							return next(err);
-						} else if (plugin.type == 'boolean') {
-							service.lastCheck = {
-								status: (!!res ? 'ok' : 'danger'),
-								response: res,
-							};
-							if (!res) console.log(colors.blue('[PLUGIN ' + service.plugin + '@' + (service.address || service.server.address) + ']'), 'Service is down!');
-						} else if (plugin.type == 'enum') {
-							service.lastCheck = {
-								status: res,
-								response: null,
-							};
-							if (res != 'ok') console.log(colors.blue('[PLUGIN ' + service.plugin + '@' + (service.address || service.server.address) + ']'), 'has status', colors.cyan(res));
-						} else if (!plugin.type) {
-							return next('Plugin has no type specified: ' + service.plugin);
+							service.lastCheck.status = 'error';
+							service.lastCheck.value = null;
+							service.lastCheck.response = err;
+							return next();
+						} else if (_.isObject(res)) {
+							// Process incomming status {{{
+							// Sanity checks on incomming object {{{
+							if (!res.status) return next('No status return for plugin ' + service.plugin);
+							if (!_.includes(['ok', 'warning', 'danger', 'error', 'unknown'], res.status)) return next('Invalid status return for plugin ' + service.plugin);
+							if (res.value && !_.isNumber(res.value)) return next('Returned tick value for plugin ' + service.plugin + ' is not a valid number');
+							// }}}
+							service.lastCheck.status = res.status;
+							service.lastCheck.value = res.value || null;
+							service.lastCheck.response = res.response || null;
+							// }}}
+							return next();
 						} else {
-							return next('Unknown type return for plugin: ' + service.plugin);
+							service.lastCheck.status = 'error';
+							service.lastCheck.value = null;
+							service.lastCheck.response = 'Unknown type return for plugin ' + service.plugin;
+							return next();
 						}
-						next();
 					}, service);
 					// }}}
 				})
-				.then(function(next) {
-					// Calculate the nextCheck {{{
-					try {
-						var parsedCron = cronParser.parseExpression(service.cronSchedule);
-						service.nextCheck.date = parsedCron.next();
-						// console.log('Next run set to', service.nextCheck.date, 'FROM', (service.lastCheck.date || service.created));
-						next();
-					} catch (e) {
-						return next('Error while parsing cron expression: ' + self.cronSchedule);
-					}
-					// }}}
-				})
+				.parallel([
+					function(next) {
+						// Process tick {{{
+						Ticks.create({
+							serverRef: service.server.ref,
+							serviceRef: service.ref,
+							status: service.lastCheck.status,
+							value: service.lastCheck.value,
+							response: service.lastCheck.response,
+						}, next);
+						// }}}
+					},
+					function(next) {
+						// Calculate the nextCheck {{{
+						try {
+							var parsedCron = cronParser.parseExpression(service.cronSchedule);
+							service.nextCheck.date = parsedCron.next();
+							// console.log('Next run set to', service.nextCheck.date, 'FROM', (service.lastCheck.date || service.created));
+							next();
+						} catch (e) {
+							return next('Error while parsing cron expression: ' + self.cronSchedule);
+						}
+						// }}}
+					},
+				])
 				.end(function(err) {
 					if (err) {
-						service.lastCheck = {
-							status: 'error',
-							response: err,
-						};
+						service.lastCheck.status = 'error';
+						service.lastCheck.value = null;
+						service.lastCheck.response = err;
 						console.log(colors.red('[MONITOR ERR ' + service.plugin + ']'), err);
 					}
 					service.lastCheck.date = new Date();

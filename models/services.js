@@ -3,6 +3,7 @@ var schema = new mongoose.Schema({
 	id: mongoose.Schema.ObjectId,
 	server: {type: mongoose.Schema.ObjectId, ref: 'servers', index: true},
 	created: {type: Date, default: Date.now},
+	ref: {type: String},
 	name: {type: String},
 	plugin: {type: String},
 	enabled: {type: Boolean, default: true, index: true},
@@ -14,6 +15,7 @@ var schema = new mongoose.Schema({
 	},
 	lastCheck: {
 		status: {type: String, enum: ['ok', 'warning', 'danger', 'error', 'unknown'], default: 'unknown', index: true},
+		value: {type: Number},
 		date: {type: Date},
 		response: {type: String},
 	},
