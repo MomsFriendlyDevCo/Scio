@@ -17,7 +17,7 @@ app.get('/api/servers/:id/chart', function(req, res) {
 				Servers.findOne({_id: req.params.id}, next);
 			},
 			services: function(next) {
-				Services.find({server: req.params.id}, next);
+				Services.find({enabled: true, server: req.params.id}, next);
 			},
 		})
 		.then('ticks', function(next) {

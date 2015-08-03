@@ -24,7 +24,7 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 		$timeout.cancel($scope.refreshTimer);
 		$scope.loadingSilent = true;
 		$q.all([
-			Servers.get({id: $stateParams.id}).$promise
+			Servers.get({enabled: true, id: $stateParams.id}).$promise
 				.then(function(data) {
 					$scope.server = data
 				}),
@@ -34,7 +34,7 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 					$scope.chartData.keys = data.keys;
 					$scope.chartData.labels = data.labels;
 				}),
-			Services.query({server: $stateParams.id}).$promise
+			Services.query({enabled: true, server: $stateParams.id}).$promise
 				.then(function(data) {
 					$scope.services = data;
 

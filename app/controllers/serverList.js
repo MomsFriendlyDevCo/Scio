@@ -16,7 +16,7 @@ app.controller('serverListController', function($scope, $timeout, Notification, 
 				.map(function(server) {
 					// Service count {{{
 					server.serviceCount = 'loading';
-					Services.count({server: server._id}).$promise.then(function(data) {
+					Services.count({enabled: true, server: server._id}).$promise.then(function(data) {
 						server.serviceCount = data.count;
 					});
 					// }}}
