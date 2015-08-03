@@ -5,6 +5,7 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 	$scope.servers = null;
 	$scope.serviceCount = null;
 	$scope.pluginCount = null;
+	$scope.tickCount = null;
 
 	// Charts {{{
 	$scope.chartData = {
@@ -68,6 +69,10 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 			Plugins.count().$promise
 				.then(function(data) {
 					$scope.pluginCount = data.count;
+				}),
+			Services.tickCount({since: '-1 day'}).$promise
+				.then(function(data) {
+					$scope.tickCount = data.count;
 				}),
 		]).finally(function() {
 			$scope.loading = false;

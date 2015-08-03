@@ -59,9 +59,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-sm-6 col-md-3">
+			<div class="mini-charts-item bgm-bluegray">
+				<div class="clearfix">
+					<div class="chart stats-bar-2"><i class="fa fa-3x fa-refresh"></i></div>
+					<div class="count">
+						<small>Checks in the last day</small>
+						<h2>{{tickCount | number}}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div ng-if="!loading" class="row">
+		<div class="col-md-9">
+			<div class="card">
+				<div class="card-header"><h2>Latest Activity</h2></div>
+				<div class="card-body">
+					Timeline
+				</div>
+			</div>
+		</div>
 		<div class="col-md-3">
 			<div class="card">
 				<div class="card-body">
