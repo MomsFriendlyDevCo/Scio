@@ -150,6 +150,16 @@ app.use(function(err, req, res, next){
 });
 // }}}
 
+// Global 'scio' object {{{
+// Passed to plugins to access internal data structures
+global.scio = {
+	models: {
+		Servers: require('./models/servers'),
+		Services: require('./models/services'),
+		Ticks: require('./models/ticks'),
+	},
+};
+// }}}
 // Init {{{
 var server = app.listen(config.port, config.host, function() {
 	console.log('Web interface listening at', colors.cyan('http://' + (config.host || 'localhost') + (config.port == 80 ? '' : ':' + config.port)));
@@ -159,6 +169,7 @@ var server = app.listen(config.port, config.host, function() {
 global.plugins = {
 	monitors: [],
 	alerters: [],
+	parsers: [],
 };
 
 async()
@@ -193,6 +204,7 @@ async()
 				if (!plugin[pluginType]) return; // Not provided
 				if (!_.isArray(plugin[pluginType])) return next('Plugin ' + basename + ' must return an array for plugin type "' + pluginType + '"');
 				plugin[pluginType].forEach(function(pluginTypePlugin) {
+					pluginTypePlugin.name = basename;
 					plugins[pluginType].push(pluginTypePlugin);
 				});
 			});
