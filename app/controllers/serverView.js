@@ -1,8 +1,9 @@
-app.controller('serverViewController', function($scope, $location, $q, $stateParams, $timeout, Servers, Settings) {
+app.controller('serverViewController', function($scope, $location, $q, $stateParams, $timeout, Servers, Services, Settings) {
 	$scope.loading = true;
 	$scope.loadingSilent = false;
 	$scope.lastRefresh = null;
 	$scope.server = null;
+	$scope.services = null;
 
 	$scope.chartData = {
 		// data: [],
@@ -26,6 +27,10 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 					$scope.chartData.data = data.data;
 					$scope.chartData.keys = data.keys;
 					$scope.chartData.labels = data.labels;
+				}),
+			Services.query({server: $stateParams.id}).$promise
+				.then(function(data) {
+					$scope.services = data;
 				}),
 		]).finally(function() {
 			$scope.loading = false;

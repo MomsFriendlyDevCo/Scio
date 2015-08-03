@@ -1,0 +1,29 @@
+<div class="table-responsive">
+	<table ng-if="services.length" class="table table-hover">
+		<thead>
+			<tr>
+				<th width="50px" class="text-right">Server</th>
+				<th>Name</th>
+				<th width="15ex" class="text-center">Status</th>
+				<th width="10ex">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="service in services | orderBy:'server._id' track by service._id">
+				<td class="text-right"><a href="#/servers/{{service.server._id}}" class="badge bgm-black">{{service.server.name || service.server.address || 'Untitled'}}</a></td>
+				<td><a href="#/services/{{service._id}}">{{service.name || service.plugin || 'Untitled'}}</a></td>
+				<td ng-switch="service.status" class="text-center"><a href="#/services/{{service._id}}">
+					<span ng-switch-when="ok" class="label label-table label-success">Ok</span>
+					<span ng-switch-when="warning" class="label label-table label-warning">Warning</span>
+					<span ng-switch-when="error" class="label label-table label-warning">Error</span>
+					<span ng-switch-when="danger" class="label label-table label-danger">Danger</span>
+					<span ng-switch-default class="label label-table label-info">Unknown</span>
+				</a></td>
+				<td class="text-center">
+					<a confirm="deleteService(service)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div ng-if="!services.length" class="alert alert-info">No services found</div>
+</div>

@@ -32,8 +32,11 @@
 
 
 	<div ng-if="!loading" class="card">
+		<div class="card-header">
+			<h2>Services</h2>
+		</div>
 		<div class="card-body">
-			FIXME: Service list
+			<div ng-include="'/partials/services/list-component.html'"></div>
 		</div>
 	</div>
 	<div ng-show="lastRefresh" class="text-center text-muted">Last refresh {{lastRefresh}}</div>
