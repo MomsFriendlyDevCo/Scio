@@ -26,6 +26,42 @@
 	</div>
 
 	<div ng-if="!loading" class="row">
+		<div class="col-sm-6 col-md-3">
+			<div class="mini-charts-item bgm-cyan">
+				<div class="clearfix">
+					<div class="chart stats-bar-2"><i class="fa fa-3x fa-server"></i></div>
+					<div class="count">
+						<small>Servers</small>
+						<h2>{{servers.length | number}}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-3">
+			<div class="mini-charts-item bgm-lightgreen">
+				<div class="clearfix">
+					<div class="chart stats-bar-2"><i class="fa fa-3x fa-cogs"></i></div>
+					<div class="count">
+						<small>Services</small>
+						<h2>{{serviceCount | number}}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-3">
+			<div class="mini-charts-item bgm-orange">
+				<div class="clearfix">
+					<div class="chart stats-bar-2"><i class="fa fa-3x fa-wrench"></i></div>
+					<div class="count">
+						<small>Plugins</small>
+						<h2>{{pluginCount | number}}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-if="!loading" class="row">
 		<div class="col-md-3">
 			<div class="card">
 				<div class="card-body">

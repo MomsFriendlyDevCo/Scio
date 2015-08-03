@@ -88,3 +88,10 @@ a.card:hover {
 	color: #CCC !important;
 }
 /* }}} */
+/* <i> icons within a .mini-charts-item {{{ */
+.mini-charts-item .chart > i {
+	width: 83px;
+	text-align: center;
+	color: #fff;
+}
+/* }}} */

@@ -1,9 +1,10 @@
-app.controller('dashboardController', function($scope, $q, $timeout, Servers, Settings) {
+app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Servers, Services, Settings) {
 	$scope.loading = true;
 	$scope.loadingSilent = false;
 	$scope.lastRefresh = null;
 	$scope.servers = null;
-	$scope.services = null;
+	$scope.serviceCount = null;
+	$scope.pluginCount = null;
 
 	// Charts {{{
 	$scope.chartData = {
@@ -47,6 +48,14 @@ app.controller('dashboardController', function($scope, $q, $timeout, Servers, Se
 					$scope.chartData.data = data.data;
 					$scope.chartData.keys = data.keys;
 					$scope.chartData.labels = data.labels;
+				}),
+			Services.count().$promise
+				.then(function(data) {
+					$scope.serviceCount = data.count;
+				}),
+			Plugins.count().$promise
+				.then(function(data) {
+					$scope.pluginCount = data.count;
 				}),
 		]).finally(function() {
 			$scope.loading = false;
