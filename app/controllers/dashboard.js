@@ -45,9 +45,21 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 				}),
 			Servers.chartAll().$promise
 				.then(function(data) {
-					$scope.chartData.data = data.data;
 					$scope.chartData.keys = data.keys;
 					$scope.chartData.labels = data.labels;
+					$scope.chartData.data = data.data
+						.map(function(tick) {
+							Object.keys(tick).forEach(function(key) {
+								switch (tick[key]) {
+									case 'ok': tick[key] = 100; break;
+									case 'warning': tick[key] = 75; break;
+									case 'danger': tick[key] = 50; break;
+									case 'error': tick[key] = 30; break;
+									case 'unknown': tick[key] = 10; break;
+								}
+							});
+							return tick;
+						});
 				}),
 			Services.count().$promise
 				.then(function(data) {
