@@ -1,5 +1,7 @@
 Scio
 ====
+*Latin: "I know" (Usually yelled after someone tells you a server is down)*
+
 Open Source modular server status tracking.
 
 
