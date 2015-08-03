@@ -136,7 +136,7 @@ module.exports = function(finish) {
 				.parallel({
 					servers: function(next) {
 						Servers.find({_id: {'$in': touchedServers}})
-							.select('_id status')
+							.select('_id status ref')
 							.exec(next);
 					},
 					services: function(next) {
@@ -161,8 +161,24 @@ module.exports = function(finish) {
 							}
 						});
 
-					server.status = bestResponse;
-					server.save(next);
+					if (server.status != bestResponse) { // We're actually changing the status
+						server.status = bestResponse;
+						async()
+							.parallel([
+								function(next) {
+									server.save(next);
+								},
+								function(next) {
+									Ticks.create({
+										serverRef: server.ref,
+										status: bestResponse,
+									}, next);
+								},
+							])
+							.end(next);
+					} else {
+						return next();
+					}
 				})
 				.end(next);
 			// }}}
