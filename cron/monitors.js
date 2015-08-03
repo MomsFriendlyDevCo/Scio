@@ -31,7 +31,7 @@ module.exports = function(finish) {
 			async()
 				.then('plugin', function(next) {
 					// Find the right plugin {{{
-					console.log(colors.blue('[MONITOR ' + service.plugin + ']'), (service.address || service.server.address));
+					console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), (service.address || service.server.address));
 					var plugin = _.find(plugins.monitors, {ref: service.plugin});
 					if (!plugin) return next('Plugin not found: ' + service.plugin);
 					next(null, plugin);
@@ -51,7 +51,15 @@ module.exports = function(finish) {
 				.then(function(next) {
 					// Run plugin {{{
 					var plugin = this.plugin;
+					var hasTimeout = false;
+					var pluginTimer = setTimeout(function() {
+						hasTimeout = true;
+						return next('Plugin timed out: ' + service.plugin);
+					}, config.plugins.timeout);
+
 					plugin.callback.call(service, function(err, res) {
+						clearTimeout(pluginTimer);
+						if (hasTimeout) return; // Plugin timed out
 						if (err) {
 							service.lastCheck.status = 'error';
 							service.lastCheck.value = null;
@@ -108,7 +116,7 @@ module.exports = function(finish) {
 						service.lastCheck.status = 'error';
 						service.lastCheck.value = null;
 						service.lastCheck.response = err;
-						console.log(colors.red('[MONITOR ERR ' + service.plugin + ']'), err);
+						console.log(colors.red('[PLUGIN ERR ' + service.plugin + ']'), err);
 					}
 					service.lastCheck.date = new Date();
 					service.nextCheck.force = false;

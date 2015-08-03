@@ -42,6 +42,7 @@ var defaults = {
 	},
 	plugins: {
 		sources: ['./node_modules', './plugins'],
+		timeout: 60 * 1000,
 		monitors: {
 			complain: true, // Also output down states to the console
 			parallalLimit: 20, // Number of services that can run concurrently, set to falsy for unlimited
