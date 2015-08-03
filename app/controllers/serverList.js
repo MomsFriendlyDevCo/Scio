@@ -1,8 +1,8 @@
 app.controller('serverListController', function($scope, $timeout, Notification, Servers, Services, Settings) {
 	$scope.loading = true;
 	$scope.loadingSilent = false;
-	$scope.servers = null;
 	$scope.lastRefresh = null;
+	$scope.servers = null;
 
 	// Data refresher {{{
 	$scope.refreshTimer = null;
