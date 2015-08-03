@@ -76,54 +76,57 @@
 		<div class="col-md-9">
 			<div class="card">
 				<div class="card-header"><h2>Latest Activity</h2></div>
-				<div class="card-body">
-
-					<div class="timeline">
-						<!-- Timeline header -->
-						<div class="timeline-header">
-							<div class="timeline-header-title bg-purple">Now</div>
-						</div>
-						<div class="timeline-entry">
+				<div class="card-body timeline">
+					<div class="timeline-header">
+						<div class="timeline-header-title">Now</div>
+					</div>
+					<div ng-repeat="entry in timeline track by entry._id" ng-switch="entry.status">
+						<div ng-switch-when="ok" class="timeline-entry">
 							<div class="timeline-stat">
-								<div class="timeline-icon bg-warning"><i class="fa fa-comment fa-lg"></i></div>
-								<div class="timeline-time">3 Hours ago</div>
+								<div class="timeline-icon bgm-green text-white"><i class="fa fa-comment fa-thumbs-up"></i></div>
+								<div class="timeline-time">{{entry.created | niceDate}}</div>
 							</div>
 							<div class="timeline-label">
-								<p class="mar-no pad-btm"><a href="#" class="btn-link text-semibold">Lisa D.</a> commented on <a href="#">The Article</a></p>
-								<blockquote class="bq-sm bq-open">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</blockquote>
+								<a href="#/servers/{{entry.server._id}}">{{entry.server.name || entry.server.address || 'Untitled'}}</a> came back up
 							</div>
 						</div>
-						<div class="timeline-entry">
+						<div ng-switch-when="warning" class="timeline-entry">
 							<div class="timeline-stat">
-								<div class="timeline-icon bg-info"><i class="fa fa-envelope fa-lg"></i></div>
-								<div class="timeline-time">15:45</div>
+								<div class="timeline-icon bgm-amber text-white"><i class="fa fa-comment fa-exclamation-triangle"></i></div>
+								<div class="timeline-time">{{entry.created | niceDate}}</div>
 							</div>
 							<div class="timeline-label">
-								<h4 class="text-info text-lg">Lorem ipsum dolor sit amet</h4>
-								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+								<a href="#/servers/{{entry.server._id}}">{{entry.server.name || entry.server.address || 'Untitled'}}</a> entered a warning state
 							</div>
 						</div>
-						<div class="timeline-entry">
+						<div ng-switch-when="danger" class="timeline-entry">
 							<div class="timeline-stat">
-								<div class="timeline-icon bg-mint"><i class="fa fa-thumbs-up fa-lg"></i></div>
-								<div class="timeline-time">13:27</div>
+								<div class="timeline-icon bgm-red text-white"><i class="fa fa-comment fa-thumbs-down"></i></div>
+								<div class="timeline-time">{{entry.created | niceDate}}</div>
 							</div>
 							<div class="timeline-label">
-								<img class="img-xs img-circle" src="img/av2.png" alt="Profile picture">
-								<a href="#" class="btn-link text-semibold">Michael Both</a> Like <a href="#">The Article</a>
+								<a href="#/servers/{{entry.server._id}}">{{entry.server.name || entry.server.address || 'Untitled'}}</a> went down
 							</div>
 						</div>
-						<div class="timeline-entry">
+						<div ng-switch-when="error" class="timeline-entry">
 							<div class="timeline-stat">
-								<div class="timeline-icon bg-purple"><i class="fa fa-line-chart fa-lg"></i></div>
-								<div class="timeline-time">11:27</div>
+								<div class="timeline-icon bgm-purple text-white"><i class="fa fa-comment fa-exclamation-circle"></i></div>
+								<div class="timeline-time">{{entry.created | niceDate}}</div>
 							</div>
 							<div class="timeline-label">
-								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+								<a href="#/servers/{{entry.server._id}}">{{entry.server.name || entry.server.address || 'Untitled'}}</a> went into an error state
+							</div>
+						</div>
+						<div ng-switch-default class="timeline-entry">
+							<div class="timeline-stat">
+								<div class="timeline-icon bgm-gray text-white"><i class="fa fa-comment fa-exclamation-circle"></i></div>
+								<div class="timeline-time">{{entry.created | niceDate}}</div>
+							</div>
+							<div class="timeline-label">
+								<a href="#/servers/{{entry.server._id}}">{{entry.server.name || entry.server.address || 'Untitled'}}</a> went into an error state
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

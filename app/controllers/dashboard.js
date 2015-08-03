@@ -6,6 +6,7 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 	$scope.serviceCount = null;
 	$scope.pluginCount = null;
 	$scope.tickCount = null;
+	$scope.timeline = null;
 
 	// Charts {{{
 	$scope.chartData = {
@@ -61,6 +62,18 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 							});
 							return tick;
 						});
+				}),
+			Servers.timeline().$promise
+				.then(function(data) {
+					$scope.timeline = data
+						// Decorators {{{
+						.map(function(tick) {
+							// Populate server from ref {{{
+							tick.server = _.find($scope.servers, {ref: tick.serverRef});
+							// }}}
+							return tick;
+						})
+						// }}}
 				}),
 			Services.count().$promise
 				.then(function(data) {
