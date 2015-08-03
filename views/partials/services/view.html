@@ -1,0 +1,39 @@
+<div ng-controller="serviceViewController" class="container">
+	<div ng-if="loading" class="alert alert-loading">
+		<i class="fa fa-spinner fa-spin"></i>
+		Loading service list...
+	</div>
+
+	<!-- Header {{{ -->
+	<div ng-if="!loading" class="block-header">
+		<h2>{{service.name || service.plugin || 'Untitled'}}</h2>
+		
+		<ul class="actions">
+			<li>
+				<a ng-click="refresh()"><i ng-class="loading || loadingSilent ? 'md md-refresh fa-spin' : 'md md-refresh'"></i></a>
+			</li>
+			<li class="dropdown">
+				<a data-toggle="dropdown"><i class="md md-more-vert"></i></a>
+				
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a ng-click="refresh()">Refresh</a></li>
+				</ul>
+			</li>
+		</ul>
+		
+	</div>
+	<!-- }}} -->
+
+	<div ng-if="!loading" class="card">
+		<div class="card-body">
+			<div line-chart line-data='lineChartData' line-xkey="y" line-ykeys="['x']" line-labels="['Value']" line-colors="['#4285F4']"></div>
+		</div>
+	</div>
+
+	<div ng-if="!loading" class="card">
+		<div class="card-body">
+			FIXME: Timeline
+		</div>
+	</div>
+	<div ng-show="lastRefresh" class="text-center text-muted">Last refresh {{lastRefresh}}</div>
+</div>

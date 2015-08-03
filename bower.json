@@ -21,6 +21,7 @@
     "angular-pretty-bytes": "~1.0.1",
     "angular-ui-notification": "~0.0.11",
     "angular-bs-confirm": "*",
-    "angular-bs-popover": "*"
+    "angular-bs-popover": "*",
+    "angular-morris-chart": "~1.1.0"
   }
 }

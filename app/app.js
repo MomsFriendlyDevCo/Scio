@@ -2,6 +2,7 @@ var app = angular.module('app', [
 	'angular-bs-confirm',
 	'angular-bs-popover',
 	'angular-bs-tooltip',
+	'angular.morris-chart',
 	'ngResource',
 	'prettyBytes',
 	'ui.gravatar',

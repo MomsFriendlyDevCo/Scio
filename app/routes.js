@@ -22,5 +22,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			url: '/services',
 			views: {main: {templateUrl: '/partials/services/list.html'}}
 		})
+		.state('services-view', {
+			url: '/services/:id',
+			views: {main: {templateUrl: '/partials/services/view.html'}}
+		})
 		// }}}
 });
