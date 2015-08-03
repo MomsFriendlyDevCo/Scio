@@ -26,6 +26,13 @@
 
 	<div ng-if="!loading" class="card">
 		<div class="card-body">
+			<div line-chart line-data='chartData.data' line-xkey="y" line-ykeys="chartData.keys" line-labels="chartData.labels" line-colors="chartData.colors"></div>
+		</div>
+	</div>
+
+
+	<div ng-if="!loading" class="card">
+		<div class="card-body">
 			FIXME: Service list
 		</div>
 	</div>
