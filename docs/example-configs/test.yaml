@@ -1,0 +1,14 @@
+google.com:
+  # Example spec for google.com
+  address: google.com
+  services:
+    - ping
+    - http
+
+reddit.com:
+  # Example spec for reddit.com
+  address: reddit.com
+  services:
+    - ping:
+      - timeoutDanger: 300
+    - http
