@@ -1,6 +1,9 @@
 var _ = require('lodash');
 var async = require('async-chainable');
 var colors = require('colors');
+var Servers = require('../models/servers');
+var Services = require('../models/services');
+var Ticks = require('../models/ticks');
 
 app.get('/api/plugins/count', function(req, res) {
 	var pluginCount = 0;
@@ -49,5 +52,25 @@ app.post('/api/plugins/parse', function(req, res) {
 		.end(function(err) {
 			if (err) return res.send(err).status(400);
 			res.send(this.responses);
+		});
+});
+
+app.post('/api/plugins/nuke', function(req, res) {
+	// FIXME: For the love of god secure this at some point
+	async()
+		.parallel([
+			function(next) {
+				Servers.find().remove(next);
+			},
+			function(next) {
+				Services.find().remove(next);
+			},
+			function(next) {
+				Ticks.find().remove(next);
+			},
+		])
+		.end(function(err) {
+			if (err) return res.send(err).status(400);
+			res.send('ok');
 		});
 });
