@@ -38,7 +38,7 @@ app.post('/api/plugins/parse', function(req, res) {
 				})
 				.then('response', function(next) {
 					console.log(colors.blue('[Parser]'), 'Begin parsing with', colors.cyan(this.parser.name));
-					this.parser.callback(next, file.path, scio);
+					this.parser.callback(next, file, scio);
 				})
 				.end(function(err) {
 					if (err) return next(err);
