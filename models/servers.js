@@ -2,6 +2,7 @@ var name = 'servers';
 var schema = new mongoose.Schema({
 	id: mongoose.Schema.ObjectId,
 	ref: {type: String},
+	parentRef: {type: String},
 	name: {type: String},
 	created: {type: Date, default: Date.now},
 	address: {type: String},
