@@ -22,4 +22,28 @@ var schema = new mongoose.Schema({
 	options: {type: mongoose.Schema.Types.Mixed},
 });
 
-module.exports = mongoose.model(name, schema);
+// Pre save hook to alloc .ref {{{
+var Servers = require('./servers');
+var Services;
+
+/**
+* Bind a post save handler to allocate a unique .ref to each service based on the plugin+offset
+* This should be unique under each server
+* NOTE: This uses a setTimeout() method of setting up a task to run AFTER the record is created as Mongo donsn't like us counting records as a new one is being created
+*/
+schema.pre('save', function(next) {
+	if (!this.ref) {
+		var newService = this;
+		setTimeout(function() {
+			Services.count({server: newService.server._id, plugin: newService.plugin}, function(err, count) {
+				if (err) { console.log('ERROR', 'Error allocating ref to', newService._id, err); return };
+				var newRef = count > 1 ? newService.plugin + (count+1) : newService.plugin;
+				Services.update({_id: newService._id}, {ref: newRef}).exec();
+			});
+		});
+	}
+	next();
+});
+// }}}
+
+Services = module.exports = mongoose.model(name, schema);
