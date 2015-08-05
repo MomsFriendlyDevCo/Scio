@@ -34,7 +34,6 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 
 		loading: true,
 	};
-		// colors: ['#4285F4', '#FFC107', '#3F51B5', '#00BCD4', '#E91E63', '#607D8B', '#8BC34A', '#673AB7', '#009688'],
 
 	$scope.donutConfig = {
 		options: {

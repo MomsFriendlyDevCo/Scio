@@ -24,7 +24,7 @@ app.get('/api/servers/chart', function(req, res) {
 		.set('series', [])
 		.set('seriesPointer', {})
 		.forEach('servers', function(next, server) {
-			var newSeries = {name: server.name || server.address, data: []};
+			var newSeries = {name: server.name || server.address || 'Untitled', data: []};
 			this.series.push(newSeries);
 			this.seriesPointer[server.ref] = newSeries;
 			next();
@@ -68,21 +68,26 @@ app.get('/api/servers/:id/chart', function(req, res) {
 				.select('created serviceRef value')
 				.sort('-created')
 				.limit(100)
-				.exec(function(err, data) {
-					if (err) return next(err);
-					return next(null, data.map(function(tick) {
-						var outTick = {y: tick.created};
-						outTick[tick.serviceRef] = tick.value;
-						return outTick;
-					}));
-				});
+				.exec(next);
+		})
+		.set('series', [])
+		.set('seriesPointer', {})
+		.forEach('services', function(next, service) {
+			var newSeries = {name: service.name || service.plugin || 'Untitled', data: []};
+			this.series.push(newSeries);
+			this.seriesPointer[service.ref] = newSeries;
+			next();
+		})
+		.forEach('ticks', function(next, tick) {
+			if (!tick.serviceRef) return next(); // Ignore server specific ticks
+			if (tick.value === null) return next(); // Ignore blank values
+			this.seriesPointer[tick.serviceRef].data.push([tick.created, tick.value]);
+			next();
 		})
 		.end(function(err) {
 			if (err) return res.send(err).status(400);
 			res.send({
-				data: this.ticks,
-				keys: _.pluck(this.services, 'ref'),
-				labels: this.services.map(function(service) { return service.name || service.plugin || 'Untitled' }),
+				series: this.series,
 			});
 		});
 });

@@ -59,6 +59,7 @@ module.exports = function(finish) {
 						return next('Plugin timed out: ' + service.plugin);
 					}, config.plugins.timeout);
 
+					console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), (service.address || service.server.address));
 					plugin.callback.call(service, function(err, res) {
 						clearTimeout(pluginTimer);
 						if (hasTimeout) return; // Plugin timed out

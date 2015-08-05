@@ -6,15 +6,30 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 	$scope.services = null;
 
 	// Charts {{{
-	$scope.chartData = {
-		// data: [],
-		// keys: [],
-		// labels: [],
-		colors: ['#4285F4', '#FFC107', '#3F51B5', '#00BCD4', '#E91E63', '#607D8B', '#8BC34A', '#673AB7', '#009688'],
-	};
+	$scope.chartConfig = {
+		options: {
+			chart: {
+				type: 'line',
+			},
+			legend: {
+				enabled: false,
+			},
+		},
 
-	$scope.donutData = {
-		//data: [],
+		series: [], // Will be replaced by data via refresh()
+
+		title: {text: false},
+
+		yAxis: {
+			title: {text: false},
+		},
+
+		xAxis: {
+			type: 'datetime',
+			title: {text: 'Date'}
+		},
+
+		loading: true,
 	};
 	// }}}
 	
@@ -30,28 +45,37 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 				}),
 			Servers.chart({id: $stateParams.id}).$promise
 				.then(function(data) {
-					$scope.chartData.data = data.data;
-					$scope.chartData.keys = data.keys;
-					$scope.chartData.labels = data.labels;
+					$scope.loading = false;
+					$scope.loadingSilent = false;
+					$scope.chartConfig.loading = false;
+
+					var newSeries = data.series.map(function(series) {
+						series.data = series.data.map(function(point) {
+							point[0] = Date.parse(point[0]);
+							return point;
+						});
+						return series;
+					});
+					// Deal with dynamic updates {{{
+					for (var s = 0; s < newSeries.length; s++) {
+						if (!$scope.chartConfig.series[s]) { // Never been set before
+							$scope.chartConfig.series[s] = newSeries[s];
+						} else {
+							$scope.chartConfig.series[s].data.splice(0, $scope.chartConfig.series[s].data.length);
+							for (var d = 0; d < newSeries[s].data.length; d++) {
+								$scope.chartConfig.series[s].data.push(newSeries[s].data[d]);
+							}
+						}
+					}
+					// }}}
+
+					$scope.lastRefresh = moment().format('D/MM/YYYY HH:mm:ss');
+					if (Settings.poll.service)
+						$scope.refreshTimer = $timeout($scope.refresh, Settings.poll.service);
 				}),
 			Services.query({enabled: true, server: $stateParams.id}).$promise
 				.then(function(data) {
 					$scope.services = data;
-
-					// Calculate donut chart data {{{
-					var donutStatus = {
-						ok: {label: 'Ok', value: 0, color: '#4CAF50'},
-						warning: {label: 'Warning', value: 0, color: '#FF9800'},
-						danger: {label: 'Danger', value: 0, color: '#F44336'},
-						error: {label: 'Error', value: 0, color: '#9C27B0'},
-						unknown: {label: 'Unknown', value: 0, color: '#9E9E9E'},
-					};
-					data.forEach(function(service) {
-						if (!donutStatus[service.status]) donutStatus[service.status] = {label: service.status, value: 0};
-						donutStatus[service.status].value++;
-					});
-					$scope.donutData.data = _.values(donutStatus);
-					// }}}
 				}),
 		]).finally(function() {
 			$scope.loading = false;
