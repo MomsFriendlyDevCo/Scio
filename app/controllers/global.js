@@ -26,6 +26,7 @@ app.controller('globalController', function($scope, $rootScope, Users) {
 
 	// FIX: Close sidebar on navigate {{{
 	$rootScope.$on('$stateChangeSuccess', e => {
+		if ($('body').hasClass('fixed-sidebar')) return; // Dont close in fixed-sidebar mode
 		$scope.toggleSidenav(false);
 	});
 	// }}}

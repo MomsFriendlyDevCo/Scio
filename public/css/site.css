@@ -56,3 +56,16 @@ a .fa {
   vertical-align: middle;
 }
 /* }}} */
+/* body.fixed-sidebar {{{ */
+body.fixed-sidebar #content {
+	margin-left: 245px;
+}
+
+body.fixed-sidebar #menu-trigger {
+	display: none;
+}
+
+body.fixed-sidebar .header-inner {
+	padding-left: 20px;
+}
+/* }}} */
