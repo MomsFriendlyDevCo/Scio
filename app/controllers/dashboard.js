@@ -9,15 +9,68 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 	$scope.timeline = null;
 
 	// Charts {{{
-	$scope.chartData = {
-		// data: [],
-		// keys: [],
-		// labels: [],
-		colors: ['#4285F4', '#FFC107', '#3F51B5', '#00BCD4', '#E91E63', '#607D8B', '#8BC34A', '#673AB7', '#009688'],
-	};
+	$scope.chartConfig = {
+		options: {
+			chart: {
+				type: 'line',
+			},
+			legend: {
+				enabled: false,
+			},
+		},
 
-	$scope.donutData = {
-		//data: [],
+		series: [], // Will be replaced by data via refresh()
+
+		title: {text: false},
+
+		yAxis: {
+			title: {text: false},
+		},
+
+		xAxis: {
+			type: 'datetime',
+			title: {text: 'Date'}
+		},
+
+		loading: true,
+	};
+		// colors: ['#4285F4', '#FFC107', '#3F51B5', '#00BCD4', '#E91E63', '#607D8B', '#8BC34A', '#673AB7', '#009688'],
+
+	$scope.donutConfig = {
+		options: {
+			chart: {
+				type: 'pie',
+				options3d: {
+					enabled: true,
+					alpha: 45,
+				},
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: false,
+						distance: 15,
+						format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+						style: {
+							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+						}
+					},
+					innerSize: 50,
+					depth: 30,
+				},
+			},
+			tooltip: {
+				formatter: function() {
+					return '<strong>' + this.point.name + '</strong><br/>' + this.point.y;
+				},
+			},
+		},
+		title: {text: false},
+		series: [{
+			data: [] // Populated on refresh()
+		}]
 	};
 	// }}}
 	
@@ -31,36 +84,29 @@ app.controller('dashboardController', function($scope, $q, $timeout, Plugins, Se
 				.then(function(data) {
 					$scope.servers = data
 					// Calculate donut chart data {{{
-					var donutStatus = {
-						ok: {label: 'Ok', value: 0, color: '#4CAF50'},
-						warning: {label: 'Warning', value: 0, color: '#FF9800'},
-						danger: {label: 'Danger', value: 0, color: '#F44336'},
-						error: {label: 'Error', value: 0, color: '#9C27B0'},
-						unknown: {label: 'Unknown', value: 0, color: '#9E9E9E'},
-					};
-					data.forEach(function(server) {
-						if (!donutStatus[server.status]) donutStatus[server.status] = {label: server.status, value: 0};
-						donutStatus[server.status].value++;
+					var donutStatus = [];
+					_.forEach(Settings.statuses, function(status, id) {
+						var matchingServers = _.filter($scope.servers, {status: id});
+						donutStatus.push({
+							name: status.label,
+							y: matchingServers ? matchingServers.length : 0,
+							color: status.color,
+						});
 					});
-					$scope.donutData.data = _.values(donutStatus);
+					$scope.donutConfig.series[0].data = donutStatus;
 					// }}}
 				}),
 			Servers.chartAll().$promise
 				.then(function(data) {
-					$scope.chartData.keys = data.keys;
-					$scope.chartData.labels = data.labels;
-					$scope.chartData.data = data.data
-						.map(function(tick) {
-							Object.keys(tick).forEach(function(key) {
-								switch (tick[key]) {
-									case 'ok': tick[key] = 100; break;
-									case 'warning': tick[key] = 75; break;
-									case 'danger': tick[key] = 50; break;
-									case 'error': tick[key] = 30; break;
-									case 'unknown': tick[key] = 10; break;
-								}
+					$scope.chartConfig.loading =false;
+					$scope.chartConfig.series = data.series
+						.map(function(series) {
+							series.data = series.data.map(function(item) {
+								if (Settings.statuses[item[1]])
+									item[1] = Settings.statuses[item[1]].value;
+								return item;
 							});
-							return tick;
+							return series;
 						});
 				}),
 			Servers.timeline().$promise

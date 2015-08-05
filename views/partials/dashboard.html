@@ -21,7 +21,7 @@
 
 	<div ng-if="!loading" class="card">
 		<div class="card-body">
-			<div line-chart line-data='chartData.data' line-xkey="y" line-ykeys="chartData.keys" line-labels="chartData.labels" line-colors="chartData.colors"></div>
+			<highchart config="chartConfig"></highchart>
 		</div>
 	</div>
 
@@ -73,7 +73,7 @@
 	</div>
 
 	<div ng-if="!loading" class="row">
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header"><h2>Latest Activity</h2></div>
 				<div class="card-body timeline">
@@ -130,10 +130,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
-					<div donut-chart donut-data="donutData.data" donut-colors="donutData.colors"></div>
+					<highchart config="donutConfig"></highchart>
 				</div>
 			</div>
 		</div>

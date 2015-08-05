@@ -18,22 +18,25 @@ app.get('/api/servers/chart', function(req, res) {
 					.select('created status serverRef')
 					.sort('-created')
 					.limit(100)
-					.exec(function(err, data) {
-						if (err) return next(err);
-						return next(null, data.map(function(tick) {
-							var outTick = {y: tick.created};
-							outTick[tick.serverRef] = tick.status;
-							return outTick;
-						}));
-					});
+					.exec(next);
 			},
+		})
+		.set('series', [])
+		.set('seriesPointer', {})
+		.forEach('servers', function(next, server) {
+			var newSeries = {name: server.name || server.address, data: []};
+			this.series.push(newSeries);
+			this.seriesPointer[server.ref] = newSeries;
+			next();
+		})
+		.forEach('ticks', function(next, tick) {
+			this.seriesPointer[tick.serverRef].data.push([tick.created, tick.status]);
+			next();
 		})
 		.end(function(err) {
 			if (err) return res.send(err).status(400);
 			res.send({
-				data: this.ticks,
-				keys: _.pluck(this.servers, 'ref'),
-				labels: this.servers.map(function(server) { return server.name || server.address || 'Untitled' }),
+				series: this.series,
 			});
 		});
 });

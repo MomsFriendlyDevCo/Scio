@@ -22,6 +22,7 @@
     "angular-ui-notification": "~0.0.11",
     "angular-bs-confirm": "*",
     "angular-bs-popover": "*",
-    "angular-morris-chart": "~1.1.0"
+    "highcharts-ng": "~0.0.8",
+    "highcharts": "~4.1.7"
   }
 }
