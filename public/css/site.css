@@ -13,6 +13,10 @@ img.brand {
 	height: 64px;
 	margin: 12px 0;
 }
+
+#main {
+	overflow-y: auto;
+}
 /* }}} */
 /* Directive: duration-popover {{{ */
 .durationPopup .form-control-static {
