@@ -1,0 +1,89 @@
+<div ng-controller="userSignupController" class="login-content">
+	<form ng-submit="submit()" class="lc-block toggled" id="l-login">
+		<div ng-show="errors.length" class="alert alert-warning pad text-left">
+			<ul>
+				<li ng-repeat="error in errors">{{error.text}}</li>
+			</ul>
+		</div>
+
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Your name</label>
+				<div class="col-sm-9">
+					<input type="text" ng-model="signup.name" placeholder="John Smith" autofocus class="form-control"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-9">
+					<input type="text" ng-model="signup.email" placeholder="someone@somewhere.com" class="form-control"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Password</label>
+				<div class="col-sm-9">
+					<input type="password" ng-model="signup.password" placeholder="Password" class="form-control"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">and again</label>
+				<div class="col-sm-9">
+					<input type="password" ng-model="signup.password2" placeholder="Password again" class="form-control"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Roaming</label>
+				<div class="col-sm-9">
+					<div class="checkbox">
+						<label><input type="checkbox" ng-model="signup.roaming"/><i class="input-helper"></i> Signup as NGO or Press</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="!signup.roaming">
+				<label class="col-sm-3 control-label">Committee</label>
+				<div class="col-sm-9">
+					<div ng-show="isLoading" class="gavel-loading">
+						<i class="fa fa-lg fa-circle-o-notch fa-spin"></i>
+					</div>
+
+					<div ng-show="!isLoading" class="fg-line">
+						<div class="select">
+							<select class="form-control" ng-model="signup.committee" placeholder="Select the committee to be part of">
+								<option value="" disabled>Select the committee to be part of</option>
+								<option ng-repeat="committee in committees" ng-value="committee._id">
+									{{committee.title}}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-if="!signup.roaming">
+				<label class="col-sm-3 control-label">Country</label>
+				<div class="col-sm-9">
+					<div ng-show="isLoading" class="gavel-loading">
+						<i class="fa fa-lg fa-circle-o-notch fa-spin"></i>
+					</div>
+
+					<div ng-show="!isLoading" class="fg-line">
+						<div class="select">
+							<select class="form-control" ng-model="signup.country" placeholder="Select the country you represent">
+								<option value="" disabled>Select the country you represent</option>
+								<option ng-repeat="country in countries" ng-value="country._id">
+									{{country.name}}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-login btn-danger btn-float waves-effect waves-button waves-float"><i class="md md-arrow-forward"></i></button>
+
+		<ul class="login-navigation">
+			<li><a href="/login" class="btn btn-sm btn-default waves-effect">Login</a></li>
+			<li><a href="/recover" class="btn btn-sm btn-default waves-effect">Recover password</a></li>
+		</ul>
+	</form>
+</div>

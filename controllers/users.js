@@ -13,20 +13,15 @@ app.get('/login', function(req, res) {
 	if (req.user) // Already logged in
 		return res.redirect('/');
 
-	res.render('pages/login', {
-		layout: 'layouts/promo',
-		namespace: 'plain',
-		message: req.flash('passportMessage'),
-	});
+	return res.redirect('/#/login');
+});
+
+app.get('/logout', function(req, res) {
+	return res.redirect('/#/logout');
 });
 
 app.get('/signup', function(req, res) {
-	res.render('pages/signup', {
-		layout: 'layouts/promo',
-		namespace: 'plain',
-		message: req.flash('signupMessage'),
-		values: {key: '', name: '', email: '', password: ''},
-	});
+	return res.redirect('/#/signup');
 });
 
 app.post('/signup', function(req, res, finish) {

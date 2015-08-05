@@ -27,4 +27,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			views: {main: {templateUrl: '/partials/services/view.html'}}
 		})
 		// }}}
+		// Users {{{
+		.state('login', {
+			url: '/login',
+			views: {main: {templateUrl: '/partials/users/login.html'}}
+		})
+		.state('logout', {
+			url: '/logout',
+			views: {main: {templateUrl: '/partials/users/logout.html'}}
+		})
+		.state('signup', {
+			url: '/signup',
+			views: {main: {templateUrl: '/partials/users/signup.html'}}
+		})
+		// }}}
 });
