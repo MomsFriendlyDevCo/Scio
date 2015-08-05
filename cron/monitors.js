@@ -31,9 +31,11 @@ module.exports = function(finish) {
 			async()
 				.then('plugin', function(next) {
 					// Find the right plugin {{{
-					console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), (service.address || service.server.address));
 					var plugin = _.find(plugins.monitors, {ref: service.plugin});
-					if (!plugin) return next('Plugin not found: ' + service.plugin);
+					if (!plugin) {
+						service.enabled = false;
+						return next('Plugin not found: ' + service.plugin);
+					}
 					next(null, plugin);
 					// }}}
 				})
