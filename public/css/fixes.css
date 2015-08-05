@@ -36,8 +36,9 @@ a.card:hover {
 }
 
 .top-menu > li > a > i.fa {
-	font-size: 28px;
+	font-size: 24px;
 	color: white;
+	margin-top: -3px;
 }
 
 .top-menu > li > a.btn {
@@ -47,10 +48,8 @@ a.card:hover {
 .top-menu > li > a {
 	text-align: center;
 	color: white;
-	vertical-align: bottom;
-	font-size: 1.6em;
-	padding-left: 0.2em;
-	padding-right: 0.2em;
+	vertical-align: middle;
+	font-size: 1.3em;
 }
 
 .top-menu > li > a > .tmn-counts {

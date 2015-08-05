@@ -7,6 +7,12 @@ body {
 	-o-user-select: none;
 	user-select: none;
 }
+
+img.brand {
+	width: 64px;
+	height: 64px;
+	margin: 12px 0;
+}
 /* }}} */
 /* Directive: duration-popover {{{ */
 .durationPopup .form-control-static {
