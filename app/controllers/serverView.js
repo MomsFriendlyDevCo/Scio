@@ -31,6 +31,43 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 
 		loading: true,
 	};
+
+	$scope.donutConfig = {
+		options: {
+			chart: {
+				type: 'pie',
+				options3d: {
+					enabled: true,
+					alpha: 45,
+				},
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: false,
+						distance: 15,
+						format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+						style: {
+							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+						}
+					},
+					innerSize: 50,
+					depth: 30,
+				},
+			},
+			tooltip: {
+				formatter: function() {
+					return '<strong>' + this.point.name + '</strong><br/>' + this.point.y;
+				},
+			},
+		},
+		title: {text: false},
+		series: [{
+			data: [] // Populated on refresh()
+		}]
+	};
 	// }}}
 	
 	// Data refresher {{{
@@ -76,6 +113,18 @@ app.controller('serverViewController', function($scope, $location, $q, $statePar
 			Services.query({enabled: true, server: $stateParams.id}).$promise
 				.then(function(data) {
 					$scope.services = data;
+					// Calculate donut chart data {{{
+					var donutStatus = [];
+					_.forEach(Settings.statuses, function(status, id) {
+						var matchingServices = _.filter($scope.services, {status: id});
+						donutStatus.push({
+							name: status.label,
+							y: matchingServices ? matchingServices.length : 0,
+							color: status.color,
+						});
+					});
+					$scope.donutConfig.series[0].data = donutStatus;
+					// }}}
 				}),
 		]).finally(function() {
 			$scope.loading = false;
