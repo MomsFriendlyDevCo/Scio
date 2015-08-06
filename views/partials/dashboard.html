@@ -26,7 +26,7 @@
 	</div>
 
 	<div ng-if="!loading" class="row">
-		<a class="col-sm-6 col-md-3" href="#/servers">
+		<a class="col-sm-6 col-md-3" href="#/servers" tooltip="The number of servers currently being moniored by Scio">
 			<div class="mini-charts-item bgm-cyan">
 				<div class="clearfix">
 					<div class="chart stats-bar-2"><i class="fa fa-3x fa-server"></i></div>
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 		</a>
-		<a class="col-sm-6 col-md-3" href="#/services">
+		<a class="col-sm-6 col-md-3" href="#/services" tooltip="The number of services currently being monitored by Scio">
 			<div class="mini-charts-item bgm-lightgreen">
 				<div class="clearfix">
 					<div class="chart stats-bar-2"><i class="fa fa-3x fa-cogs"></i></div>
@@ -48,7 +48,7 @@
 				</div>
 			</div>
 		</a>
-		<div class="col-sm-6 col-md-3">
+		<div class="col-sm-6 col-md-3" tooltip="The number of plugins currenly loaded by Scio">
 			<div class="mini-charts-item bgm-orange">
 				<div class="clearfix">
 					<div class="chart stats-bar-2"><i class="fa fa-3x fa-wrench"></i></div>
@@ -59,7 +59,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-6 col-md-3">
+		<div class="col-sm-6 col-md-3" tooltip="The number of checks on services, performed by Scio in the last day">
 			<div class="mini-charts-item bgm-bluegray">
 				<div class="clearfix">
 					<div class="chart stats-bar-2"><i class="fa fa-3x fa-refresh"></i></div>

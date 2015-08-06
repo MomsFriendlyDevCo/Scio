@@ -14,5 +14,8 @@ app.factory('Settings', function() {
 			error: {label: 'Error', value: 30, color: '#9C27B0'},
 			unknown: {label: 'Unknown', value: 10, color: '#9E9E9E'},
 		},
+		options: {
+			requireLogin: false,
+		},
 	};
 });

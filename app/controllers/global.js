@@ -1,5 +1,9 @@
 // App global controller (also $rootScope)
-app.controller('globalController', function($scope, $rootScope, Users) {
+app.controller('globalController', function($scope, $rootScope, Settings, Users) {
+	// .settings {{{
+	$scope.settings = Settings;
+	// }}}
+
 	// .user {{{
 	$scope.user = null;
 	Users.profile().$promise.then(function(data) {

@@ -5,6 +5,7 @@
 				<th width="50px" class="text-right">Server</th>
 				<th>Name</th>
 				<th width="15ex" class="text-center">Status</th>
+				<th width="20ex" class="text-center">Response</th>
 				<th width="10ex">&nbsp;</th>
 			</tr>
 		</thead>
@@ -15,11 +16,12 @@
 				<td ng-switch="service.status" class="text-center"><a href="#/services/{{service._id}}">
 					<span ng-switch-when="ok" class="label label-table label-success">Ok</span>
 					<span ng-switch-when="warning" class="label label-table label-warning">Warning</span>
-					<span ng-switch-when="error" class="label label-table label-warning">Error</span>
+					<span ng-switch-when="error" tooltip="{{service.lastCheck.response}}" class="label label-table label-warning">Error</span>
 					<span ng-switch-when="danger" class="label label-table label-danger">Danger</span>
 					<span ng-switch-default class="label label-table label-info">Unknown</span>
 				</a></td>
-				<td class="text-center">
+				<td class="text-center"><a href="#/services/{{service._id}}" class="badge badge-info">{{service.lastCheck.value}}</a></td>
+				<td class="text-center hide-until-hover">
 					<a confirm="deleteService(service)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
 				</td>
 			</tr>
