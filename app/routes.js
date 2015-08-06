@@ -7,6 +7,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			url: '/',
 			views: {main: {templateUrl: '/partials/dashboard.html'}}
 		})
+		.state('map', {
+			url: '/map',
+			views: {main: {templateUrl: '/partials/map.html'}}
+		})
 		// Servers {{{
 		.state('servers', {
 			url: '/servers',

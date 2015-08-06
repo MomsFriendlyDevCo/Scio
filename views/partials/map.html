@@ -1,0 +1,29 @@
+<div ng-controller="mapController">
+	<!-- Header {{{ -->
+	<div class="block-header">
+		<h2>Network Map</h2>
+		
+		<ul class="actions">
+			<li>
+				<a ng-click="refresh()"><i ng-class="loading || loadingSilent ? 'md md-refresh fa-spin' : 'md md-refresh'"></i></a>
+			</li>
+			<li class="dropdown">
+				<a data-toggle="dropdown"><i class="md md-more-vert"></i></a>
+				
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a ng-click="refresh()">Refresh</a></li>
+				</ul>
+			</li>
+		</ul>
+		
+	</div>
+	<!-- }}} -->
+
+	<div ng-if="!loading" class="card">
+		<div class="card-body">
+			<div d3-hierarchy="map" depth="3"></div>
+		</div>
+	</div>
+
+	<div ng-show="lastRefresh" class="text-center text-muted">Last refresh {{lastRefresh}}</div>
+</div>

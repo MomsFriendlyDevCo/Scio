@@ -114,4 +114,63 @@ app.get('/api/servers/timeline', function(req, res) {
 		});
 });
 
+
+/**
+* Return a server hierarchy as a tree structure
+*/
+app.get('/api/servers/tree', function(req, res) {
+	async()
+		.set('tree', [])
+		.set('treePointers', {})
+		// Retrieve initial data {{{
+		.parallel({
+			servers: function(next) {
+				Servers.find({enabled: true})
+					.select('_id ref parentRef name address status')
+					.exec(next);
+			},
+		})
+		// }}}
+
+		// Build Tree {{{
+		.then('asyncTree', function(next) {
+			return next(null, 
+				async()
+					.set('tree', this.tree)
+					.set('treePointers', this.treePointers)
+			);
+		})
+		.forEach('servers', function(next, server) {
+			this.asyncTree.defer(server.parentRef || [], server.ref, function(nextServer) {
+				if (!server.parentRef) {
+					this.treePointers[server.ref] = server.toJSON();
+					this.tree.push(this.treePointers[server.ref]);
+				} else if (this.treePointers[server.parentRef]) {
+					this.treePointers[server.ref] = server.toJSON();
+					if (!this.treePointers[server.parentRef].children)
+						this.treePointers[server.parentRef].children = [];
+
+					this.treePointers[server.parentRef].children.push(this.treePointers[server.ref]);
+				} else {
+					console.log('Cant find parent', server.parentRef, 'of child', server.ref);
+					this.treePointers[server.ref] = server.toJSON();
+					this.tree.push(server);
+				}
+				nextServer();
+			});
+			next();
+		})
+		.then(function(next) {
+			this.asyncTree
+				.await()
+				.end(next);
+		})
+		// }}}
+
+		.end(function(err) {
+			if (err) return res.send(err).status(400);
+			res.send(this.tree);
+		});
+});
+
 restify.serve(app, Servers);
