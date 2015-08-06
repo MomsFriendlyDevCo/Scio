@@ -153,14 +153,14 @@ module.exports = function(finish) {
 					this.services
 						.filter(function(service) { return service.server.toString() == server._id.toString() })
 						.forEach(function(service) {
-							if (service.status == 'warning' && bestResponse == 'ok') {
-								bestResponse = 'warning';
-							} else if (service.status == 'unknown' && bestResponse == 'ok') {
-								bestResponse = 'unknown';
-							} else if (service.status == 'error') {
-								bestResponse = 'error';
-							} else if (service.status == 'danger') {
+							if (service.status == 'danger') {
 								bestResponse = 'danger';
+							} else if (service.status == 'warning' && bestResponse != 'danger') {
+								bestResponse = 'warning';
+							} else if (service.status == 'error' && (bestResponse != 'warning' || bestResponse != 'danger')) {
+								bestResponse = 'error';
+							} else if (service.status == 'unknown' && (bestResponse != 'warning' || bestResponse != 'danger' || bestRepsponse != 'error')) {
+								bestResponse = 'unknown';
 							}
 						});
 
