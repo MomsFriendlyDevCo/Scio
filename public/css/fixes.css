@@ -99,3 +99,8 @@ a.card:hover {
 	color: #fff;
 }
 /* }}} */
+/* Waves FIX: Waves buttons should not be centered {{{ */
+.waves-button {
+		text-align: inherit !important;
+}
+/* }}} */
