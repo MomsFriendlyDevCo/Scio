@@ -6,11 +6,15 @@ app.controller('mapController', function($scope, $timeout, Servers, Settings) {
 
 	// Data refresher {{{
 	$scope.treeWalker = function(node) {
-		if (!node.name)
-			node.name = node.address || 'Untitled';
+		var newNode = {
+			name: node.name || node.address || 'Untitled',
+			size: _.random(1, 9999),
+		};
+
 		if (node.children)
-			node.children = node.children.map($scope.treeWalker);
-		return node;
+			newNode.children = node.children.map($scope.treeWalker);
+
+		return newNode;
 	};
 
 	$scope.refreshTimer = null;
@@ -19,7 +23,10 @@ app.controller('mapController', function($scope, $timeout, Servers, Settings) {
 		$scope.loadingSilent = true;
 		Servers.tree().$promise
 			.then(function(data) {
-				$scope.map = data.map($scope.treeWalker);
+				$scope.map = {
+					name: 'Root',
+					children: data.map($scope.treeWalker),
+				};
 			})
 			.finally(function() {
 				$scope.loading = false;

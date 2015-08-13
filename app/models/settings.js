@@ -2,7 +2,7 @@ app.factory('Settings', function() {
 	return {
 		poll: {
 			dashboard: 5 * 1000,
-			map: 5 * 1000,
+			map: 0, // Disabled for now as its buggy
 			server: 5 * 1000,
 			servers: 5 * 1000,
 			service: 5 * 1000,

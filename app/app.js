@@ -2,7 +2,7 @@ var app = angular.module('app', [
 	'angular-bs-confirm',
 	'angular-bs-popover',
 	'angular-bs-tooltip',
-	'angular-d3-hierarchy',
+	'angular-d3-sunburst',
 	'highcharts-ng',
 	'ngResource',
 	'prettyBytes',

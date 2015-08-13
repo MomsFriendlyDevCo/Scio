@@ -24,6 +24,6 @@
     "angular-bs-popover": "*",
     "highcharts-ng": "~0.0.8",
     "highcharts": "~4.1.7",
-    "angular-d3-hierarchy": "*"
+    "angular-d3-sunburst": "*"
   }
 }
