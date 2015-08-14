@@ -73,3 +73,14 @@ body.fixed-sidebar .header-inner {
 	padding-left: 20px;
 }
 /* }}} */
+/* Top bar logo {{{ */
+.logo > a > img.brand {
+	width: 40px;
+	height: 40px;
+	margin: 0;
+	background: white;
+	border-radius: 100px;
+	box-shadow: rgba(0,0,0,0.5) 0px 0px 10px;
+	margin-top: -7px;
+}
+/* }}} */
