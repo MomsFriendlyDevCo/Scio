@@ -87,7 +87,7 @@ app.post('/signup', function(req, res, finish) {
 });
 
 app.get('/api/users/profile', function(req, res) {
-	if (!req.user) return res.status(200).send({});
+	if (!req.user || !req.user.data) return res.status(200).send({});
 
 	var user = _.clone(req.user.data);
 	user.settings = req.user.settings;

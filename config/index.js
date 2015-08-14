@@ -21,6 +21,10 @@ var defaults = {
 	port: process.env.PORT || 80,
 	url: 'http://localhost',
 	secret: "HWkozqfP6+6h9XV25KvD75/ri3nkjcu8wD/imnLwBtk+iyFJiy1M8qotLCnnEjtZI", // A quick way to populate this is with `cat /dev/urandom | base64`
+	access: {
+		lockdown: false, // Set to true to lock the site with the below users
+		users: [{user: 'user', pass: 'qwaszx'}],
+	},
 	gulp: {
 		debugJS: true,
 		minifyJS: false,
