@@ -2,6 +2,7 @@ var _ = require('lodash');
 var async = require('async-chainable');
 var colors = require('colors');
 var cronParser = require('cron-parser');
+var domain = require('domain');
 var Services = require('../models/services');
 var Servers = require('../models/servers');
 var Ticks = require('../models/ticks');
@@ -52,41 +53,51 @@ module.exports = function(finish) {
 				})
 				.then(function(next) {
 					// Run plugin {{{
+					var pluginDomain = domain.create();
 					var plugin = this.plugin;
 					var hasTimeout = false;
-					var pluginTimer = setTimeout(function() {
-						hasTimeout = true;
-						return next('Plugin timed out: ' + service.plugin);
-					}, config.plugins.timeout);
 
-					console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), (service.address || service.server.address));
-					plugin.callback.call(service, function(err, res) {
-						clearTimeout(pluginTimer);
-						if (hasTimeout) return; // Plugin timed out
-						if (err) {
-							service.lastCheck.status = 'error';
-							service.lastCheck.value = null;
-							service.lastCheck.response = err;
-							return next();
-						} else if (_.isObject(res)) {
-							// Process incomming status {{{
-							// Sanity checks on incomming object {{{
-							if (!res.status) return next('No status return for plugin ' + service.plugin);
-							if (!_.includes(['ok', 'warning', 'danger', 'error', 'unknown'], res.status)) return next('Invalid status return for plugin ' + service.plugin);
-							if (res.value && !_.isNumber(res.value)) return next('Returned tick value for plugin ' + service.plugin + ' is not a valid number');
-							// }}}
-							service.lastCheck.status = res.status;
-							service.lastCheck.value = res.value || null;
-							service.lastCheck.response = res.response || null;
-							// }}}
-							return next();
-						} else {
-							service.lastCheck.status = 'error';
-							service.lastCheck.value = null;
-							service.lastCheck.response = 'Unknown type return for plugin ' + service.plugin;
-							return next();
-						}
-					}, service);
+					pluginDomain
+						.on('error', function(err) {
+							console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), colors.red('CRASHED!'), err);
+							return next('Plugin ' + service.plugin + ' crashed - ' + err);
+						})
+						.run(function() {
+							var pluginTimer = setTimeout(function() {
+								hasTimeout = true;
+								pluginDomain.exit();
+								return next('Plugin timed out: ' + service.plugin);
+							}, config.plugins.timeout);
+
+							console.log(colors.blue('[PLUGIN ' + service.plugin + ']'), (service.address || service.server.address));
+							plugin.callback.call(service, function(err, res) {
+								clearTimeout(pluginTimer);
+								if (hasTimeout) return; // Plugin timed out
+								if (err) {
+									service.lastCheck.status = 'error';
+									service.lastCheck.value = null;
+									service.lastCheck.response = err;
+									return next();
+								} else if (_.isObject(res)) {
+									// Process incomming status {{{
+									// Sanity checks on incomming object {{{
+									if (!res.status) return next('No status return for plugin ' + service.plugin);
+									if (!_.includes(['ok', 'warning', 'danger', 'error', 'unknown'], res.status)) return next('Invalid status return for plugin ' + service.plugin);
+									if (res.value && !_.isNumber(res.value)) return next('Returned tick value for plugin ' + service.plugin + ' is not a valid number');
+									// }}}
+									service.lastCheck.status = res.status;
+									service.lastCheck.value = res.value || null;
+									service.lastCheck.response = res.response || null;
+									// }}}
+									return next();
+								} else {
+									service.lastCheck.status = 'error';
+									service.lastCheck.value = null;
+									service.lastCheck.response = 'Unknown type return for plugin ' + service.plugin;
+									return next();
+								}
+							}, service);
+						});
 					// }}}
 				})
 				.parallel([
