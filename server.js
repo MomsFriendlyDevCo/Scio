@@ -192,7 +192,7 @@ async()
 		fs.readdir(source, function(err, files) {
 			if (err) return next(err);
 			files.forEach(function(file) {
-				if (/^scio-/.test(file))
+				if (/^scio-(monitor|parser)-(.*)$/.test(file))
 					self.pluginsList.push(source + '/' + file);
 			});
 			next();
