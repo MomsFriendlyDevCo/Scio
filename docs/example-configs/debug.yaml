@@ -1,0 +1,142 @@
+alpha:
+  address: alpha
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+beta:
+  address: beta
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+gamma:
+  address: gamma
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+delta:
+  address: delta
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+epsilon:
+  address: epsilon
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+zeta:
+  address: zeta
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+eta:
+  address: eta
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+theta:
+  address: theta
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+iota:
+  address: iota
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+kappa:
+  address: kappa
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+lambda:
+  address: lambda
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+mu:
+  address: mu
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+nu:
+  address: nu
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+xi:
+  address: xi
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+omicron:
+  address: omicron
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+pi:
+  address: pi
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+rho:
+  address: rho
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+sigma:
+  address: sigma
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+tau:
+  address: tau
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+upsilon:
+  address: upsilon
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+phi:
+  address: phi
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+chi:
+  address: chi
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+psi:
+  address: psi
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
+
+omega:
+  address: omega
+  services:
+    - debug-random:
+      - schedule: "* * * * *"
