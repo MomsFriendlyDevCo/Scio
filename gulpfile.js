@@ -13,6 +13,7 @@ var notify = require('gulp-notify');
 var replace = require('gulp-replace');
 var requireDir = require('require-dir');
 var sourcemaps = require('gulp-sourcemaps');
+var superagent = require('superagent');
 var uglify = require('gulp-uglify');
 
 // Configure / Plugins {{{
@@ -145,5 +146,33 @@ gulp.task('css', ['load:config'], function() {
 */
 gulp.task('server', ['build'], function() {
 	require('./server.js');
+});
+// }}}
+
+// Various config profiles {{{
+// Remove all profiles on the server
+gulp.task('config-nuke', ['load:config'], function(next) {
+	superagent.post(config.url + '/api/plugins/nuke')
+		.send({token: config.token})
+		.end(function(err, res) {
+			if (err) return next(err);
+			if (!res.ok) return next("Failed nuke, return code: " + res.statusCode + ' - ' + res.text);
+			next();
+		});
+});
+
+// Load the ./docs/example-configs/debug.yaml config file as the main profile
+gulp.task('config-debug', ['load:config', 'config-nuke'], function(next) {
+	superagent.post(config.url + '/api/plugins/parse')
+		.send({token: config.token})
+		.type('form')
+		.attach('file', './docs/example-configs/debug.yaml')
+		.end(function(err, res) {
+			if (err) return next(err);
+			if (!res.ok || res.statusCode != 200) return next('Failed upload, return code: ' + res.statusCode + ' - ' + res.text);
+			if (!_.isArray(res.body)) return next(res.text);
+			gutil.log(res.body);
+			next();
+		})
 });
 // }}}
