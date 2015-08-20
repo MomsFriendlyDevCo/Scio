@@ -54,7 +54,7 @@ var defaults = {
 	},
 	cron: {
 		enabled: true,
-		debugForceAll: true, // Debugging - Force every service to refresh every cron cycle
+		debugForceAll: false, // Debugging - Force every service to refresh every cron cycle
 		verbose: false,
 		waitTime: 1 * 1000, // Wait between cron cycles
 	},
