@@ -171,7 +171,7 @@ var server = app.listen(config.port, config.host, function() {
 // Plugins {{{
 global.plugins = {
 	monitors: [],
-	alerters: [],
+	notifiers: [],
 	parsers: [],
 };
 
@@ -186,7 +186,7 @@ async()
 		fs.readdir(source, function(err, files) {
 			if (err) return next(err);
 			files.forEach(function(file) {
-				if (/^scio-(monitor|parser)-(.*)$/.test(file))
+				if (/^scio-(monitor|parser|notifier)-(.*)$/.test(file))
 					self.pluginsList.push(source + '/' + file);
 			});
 			next();
@@ -203,15 +203,28 @@ async()
 		if (!plugin._scio) {
 			return next('Plugin does not look like a Scio compatible module: ' + basename);
 		} else { // All is well
+			var pluginBoot = async();
 			Object.keys(plugins).forEach(function(pluginType) {
 				if (!plugin[pluginType]) return; // Not provided
 				if (!_.isArray(plugin[pluginType])) return next('Plugin ' + basename + ' must return an array for plugin type "' + pluginType + '"');
 				plugin[pluginType].forEach(function(pluginTypePlugin) {
 					pluginTypePlugin.name = basename;
 					plugins[pluginType].push(pluginTypePlugin);
+					if (pluginTypePlugin.register) // Has a register hook
+						pluginBoot.defer(function(next) {
+							scio.compileOptions(function(err, options) {
+								if (err) return next(err);
+								pluginTypePlugin.settings = options;
+								pluginTypePlugin.register(next, pluginTypePlugin, scio);
+							}, pluginTypePlugin, {}); // FIXME: Not sure where register options come from for a plugin
+						});
 				});
 			});
-			next();
+
+			// Wait for all plugin.register hooks to exit
+			pluginBoot
+				.await()
+				.end(next);
 		}
 	})
 	.end(function(err) {
