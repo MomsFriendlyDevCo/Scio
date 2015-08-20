@@ -8,7 +8,7 @@ var schema = new mongoose.Schema({
 	plugin: {type: String},
 	enabled: {type: Boolean, default: true, index: true},
 	status: {type: String, enum: ['ok', 'warning', 'danger', 'error', 'unknown'], default: 'unknown', index: true},
-	cronSchedule: {type: String, default: '0 * * * *'}, // (Second, Minute, Hour, DayOfMonth, Month, DayOfWeek)
+	cronSchedule: {type: String, default: '*/5 * * * *'}, // (Second, Minute, Hour, DayOfMonth, Month, DayOfWeek)
 	nextCheck: {
 		date: {type: Date, default: Date.now},
 		force: {type: Boolean, default: false}, // Force the schedule to run on the next processing cycle
