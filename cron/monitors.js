@@ -44,7 +44,7 @@ module.exports = function(finish) {
 					// Apply options {{{
 					if (!service.options) service.options = {};
 					this.plugin.options.forEach(function(option) {
-						if (!option.default) return; // No need to apply a default
+						if (option.default === undefined) return; // No need to apply a default
 						if (service.options[option.id]) return; // Option manually specified by the user
 						service.options[option.id] = option.default; // Read in from defaults
 					});
