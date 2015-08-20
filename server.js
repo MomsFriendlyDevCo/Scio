@@ -228,6 +228,7 @@ async()
 					_.pluck(plugins[pluginType], 'ref').map(function(i) { return colors.cyan(i) }).join(', ')
 				);
 		});
+		scio.emit('ready');
 		// }}}
 	});
 // }}}

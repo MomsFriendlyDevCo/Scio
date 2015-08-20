@@ -10,4 +10,16 @@ var schema = new mongoose.Schema({
 	enabled: {type: Boolean, default: true, index: true},
 });
 
+// Pre save hook to emit 'serverStatus' {{{
+schema.pre('save', function(next) {
+	if (this.isModified('status')) {
+		var server = this;
+		setTimeout(function() {
+			scio.emit('serverStatus', server);
+		});
+	}
+	next();
+});
+// }}}
+
 module.exports = mongoose.model(name, schema);

@@ -44,3 +44,28 @@ Scio needs *some* plugins to work so either go look for some [Scio tagged module
 	# Install the base ping + http monitoring plugins
 	npm install scio-monitor-ping scio-monitor-http
 
+
+
+
+Plugin Development
+==================
+Scio is highly configurable via the NPM module system.
+
+When Scio loads it searches its own node_modules path for any of the following plugin formats:
+
+* **scio-monitor** - Monitor plugins. These supply Scio with modules capable of probing a remote service.
+* **scio-notifier** - Notifier plugins. When a monitor detects a server or service changes state these plugins alert in some way.
+* **scio-parser** - Config format parsers. These plugins extend Scios default config formats.
+
+Each plugin should be in the format `scio-(type)-(name)` (e.g. `scio-notifer-console`).
+
+
+Scio events
+-----------
+The main `scio` object will emit the following events:
+
+| Event                | Arguments               | Description |
+|----------------------|-------------------------|-------------|
+| `ready`              |                         | Emitted when all plugins have loaded and Scio is entering the main event cycle |
+| `serverStatus`       | serverObject            | Emitted when the status of a server model changes |
+| `serviceStatus`      | serviceObject           | Emitted when the status of a service model changes |

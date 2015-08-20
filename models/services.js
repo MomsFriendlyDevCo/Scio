@@ -46,4 +46,13 @@ schema.pre('save', function(next) {
 });
 // }}}
 
+// Pre save hook to emit 'serverStatus' {{{
+schema.pre('save', function(next) {
+	if (this.isModified('status')) {
+		scio.emit('serviceStatus', this);
+	}
+	next();
+});
+// }}}
+
 Services = module.exports = mongoose.model(name, schema);
