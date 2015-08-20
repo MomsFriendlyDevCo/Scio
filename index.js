@@ -6,6 +6,7 @@ var events = require('events');
 var util = require('util');
 
 function ScioObject () {
+	this.config = config;
 	this.models = {
 		Servers: require('./models/servers'),
 		Services: require('./models/services'),
