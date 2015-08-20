@@ -41,15 +41,12 @@ module.exports = function(finish) {
 					// }}}
 				})
 				.then(function(next) {
-					// Apply options {{{
-					if (!service.options) service.options = {};
-					this.plugin.options.forEach(function(option) {
-						if (option.default === undefined) return; // No need to apply a default
-						if (service.options[option.id]) return; // Option manually specified by the user
-						service.options[option.id] = option.default; // Read in from defaults
-					});
-					next();
-					// }}}
+					var plugin = this.plugin;
+					scio.compileOptions(function(err, settings) {
+						if (err) return next(err);
+						service.settings = settings;
+						next();
+					}, plugin, service.options);
 				})
 				.then(function(next) {
 					// Run plugin {{{

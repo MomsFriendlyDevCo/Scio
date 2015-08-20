@@ -159,15 +159,9 @@ app.use(function(err, req, res, next){
 });
 // }}}
 
-// Global 'scio' object {{{
+// 'scio' object {{{
 // Passed to plugins to access internal data structures
-global.scio = {
-	models: {
-		Servers: require('./models/servers'),
-		Services: require('./models/services'),
-		Ticks: require('./models/ticks'),
-	},
-};
+global.scio = require('./index');
 // }}}
 // Init {{{
 var server = app.listen(config.port, config.host, function() {
