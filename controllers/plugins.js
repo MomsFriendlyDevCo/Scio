@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var async = require('async-chainable');
-var colors = require('colors');
+var colors = require('chalk');
 var Servers = require('../models/servers');
 var Services = require('../models/services');
 var Ticks = require('../models/ticks');
