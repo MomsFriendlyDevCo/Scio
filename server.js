@@ -200,32 +200,31 @@ async()
 		var basename = fspath.basename(plugin);
 		console.log(colors.blue('[PLUGINS]'), 'Load', colors.cyan(basename));
 		var plugin = require(plugin);
-		if (!plugin._scio) {
-			return next('Plugin does not look like a Scio compatible module: ' + basename);
-		} else { // All is well
-			var pluginBoot = async();
-			Object.keys(plugins).forEach(function(pluginType) {
-				if (!plugin[pluginType]) return; // Not provided
-				if (!_.isArray(plugin[pluginType])) return next('Plugin ' + basename + ' must return an array for plugin type "' + pluginType + '"');
-				plugin[pluginType].forEach(function(pluginTypePlugin) {
-					pluginTypePlugin.name = basename;
-					plugins[pluginType].push(pluginTypePlugin);
-					if (pluginTypePlugin.register) // Has a register hook
-						pluginBoot.defer(function(next) {
-							scio.compileOptions(function(err, options) {
-								if (err) return next(err);
-								pluginTypePlugin.settings = options;
-								pluginTypePlugin.register(next, pluginTypePlugin, scio);
-							}, pluginTypePlugin, {}); // FIXME: Not sure where register options come from for a plugin
-						});
-				});
-			});
+		if (!plugin._scio) return next('Plugin does not look like a Scio compatible module: ' + basename);
 
-			// Wait for all plugin.register hooks to exit
-			pluginBoot
-				.await()
-				.end(next);
-		}
+		var pluginBoot = async(); // Make an async object we can add plugin load tasks to
+
+		_.keys(plugins).forEach(function(pluginType) {
+			if (!plugin[pluginType]) return; // Not provided
+			if (!_.isArray(plugin[pluginType])) return next('Plugin ' + basename + ' must return an array for plugin type "' + pluginType + '"');
+			plugin[pluginType].forEach(function(pluginTypePlugin) {
+				pluginTypePlugin.name = basename;
+				plugins[pluginType].push(pluginTypePlugin);
+				if (pluginTypePlugin.register) // Has a register hook
+					pluginBoot.defer(function(next) {
+						scio.compileOptions(function(err, options) {
+							if (err) return next(err);
+							pluginTypePlugin.settings = options;
+							pluginTypePlugin.register(next, pluginTypePlugin, scio);
+						}, pluginTypePlugin, {}); // FIXME: Not sure where register options come from for a plugin
+					});
+			});
+		});
+
+		// Run all plugins and Wait for all plugin.register hooks to exit
+		pluginBoot
+			.await()
+			.end(next);
 	})
 	.end(function(err) {
 		if (err) {
@@ -233,7 +232,7 @@ async()
 			process.exit(1);
 		}
 		// Print out what we loaded {{{
-		Object.keys(plugins).forEach(function(pluginType) {
+		_.keys(plugins).forEach(function(pluginType) {
 			if (plugins[pluginType].length > 0)
 				console.log(
 					colors.blue('[PLUGINS]'),
